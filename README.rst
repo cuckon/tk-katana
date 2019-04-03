@@ -12,8 +12,11 @@ tk-katana
         :target: https://wwfxuk.readthedocs.io/projects/tk-katana/en/latest/?badge=latest
         :alt: Documentation Status
 
-
-Documentation: https://wwfxuk.readthedocs.io/projects/tk-katana
+============== ================================================
+Documentation  https://wwfxuk.readthedocs.io/projects/tk-katana
+Change Log     See ``HISTORY.rst``
+Credits        See ``AUTHORS.rst``
+============== ================================================
 
 A Shotgun Engine for Katana
 
@@ -94,33 +97,5 @@ After `taking over the project configurations`_
        ./tank cache_apps
    
 
-Credits
--------
-
-* It has been generously made public by Light Chaser Animation with help from 
-  The Foundry.
-  
-  * Thanks to `Ying Jie Kong (Jerry)`_ at Light Chaser and `Sam Saxon`_ at 
-    The Foundry for their contributions
-  * Thanks to `Rob Blau`_ for initial release `v0.1.0`_
-
-* `Jeremy Boissinot`_ and `Kevin Sallee`_ at RodeoFX for patches up to `v0.1.1_rdo3`_
-* `AppCommand` changes by `Gael-Honorez-sb`_
-* `Diego Garcia Huerta`_ for 
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`Diego Garcia Huerta`: https://github.com/diegogarciahuerta
-.. _`Gael-Honorez-sb`: https://github.com/Gael-Honorez-sb/tk-katana/commit/e06ab6b6b38960efbbdb18dc73b139aae278b040
-.. _`Jeremy Boissinot`: http://jboissinot.com
-.. _`Kevin Sallee`: https://github.com/kevinsallee
-.. _`Rob Blau`: https://github.com/robblau
-.. _`robblau's v0.1.0`: https://github.com/robblau/tk-katana/tree/b9cca6e4009ff84870d6e691c2b25e818dc99d1a
-.. _`robblau's v0.1.0`: https://github.com/robblau/tk-katana/tree/b9cca6e4009ff84870d6e691c2b25e818dc99d1a
-.. _`Sam Saxon`: https://github.com/sam-saxon
-.. _`taking over the project configurations`: https://support.shotgunsoftware.com/hc/en-us/articles/219039938-Pipeline-Tutorial#Taking%20Over%20the%20Project%20Config
-.. _`tk-natron`: https://github.com/diegogarciahuerta/tk-natron
-.. _`v0.1.1_rdo3`: https://github.com/rodeofx/tk-katana/commit/0ddace4f285ff7f9642c165d3d225754584bbaf9
-.. _`Ying Jie Kong (Jerry)`: https://github.com/JerryKon
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+This package was re-created with Cookiecutter_ and the 
+`audreyr/cookiecutter-pypackage`_ project template.
