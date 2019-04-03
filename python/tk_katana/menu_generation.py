@@ -9,8 +9,14 @@ import unicodedata
 
 import tank
 
-from Katana import QtGui, QtCore
+try:
 
+    from Katana import QtGui, QtCore ,QtWidgets
+
+except:
+    
+    from Katana import QtGui, QtCore
+    QtWidgets = QtGui
 
 class MenuGenerator(object):
     """
@@ -87,19 +93,24 @@ class MenuGenerator(object):
 
         # Attempt to find existing menu
         for menu in main_menu.children():
-            is_menu = isinstance(menu, QtGui.QMenu)
+            is_menu = isinstance(menu, QtWidgets.QMenu)
             if is_menu and menu.title() == self.menu_name:
                 return menu
 
         # Otherwise, create a new menu
-        menu = QtGui.QMenu(self.menu_name, main_menu)
+        menu = QtWidgets.QMenu(self.menu_name, main_menu)
         main_menu.addMenu(menu)
         return menu
 
     @classmethod
     def get_katana_main_bar(cls):
-        import UI4.App.MainWindow
-        return UI4.App.MainWindow.GetMainWindow().getMenuBar()
+        try:
+            import UI4.App.MainWindow
+            return UI4.App.MainWindow.GetMainWindow().getMenuBar()
+        
+        except:
+            layoutsMenus = [x for x in QtGui.qApp.topLevelWidgets() if type(x).__name__ == 'LayoutsMenu']
+            return layoutsMenus[0].parent()
 
     def destroy_menu(self):
         """

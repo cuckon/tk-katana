@@ -155,12 +155,14 @@ class KatanaActions(HookBaseClass):
         if not os.path.exists(path):
             raise Exception("File not found on disk - '%s'" % path)
                 
+        name = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+
 
         # Create node
         root = NodegraphAPI.GetRootNode()
         node = NodegraphAPI.CreateNode(node_type, parent=root)
-        parm = node.getParameter(asset_parameter)
-        parm.setValue(str(parameter_dict), 0)
+        parm = node.getParameter("abcAsset")
+        parm.setValue(path, 0)
         return node
 
 

@@ -13,6 +13,7 @@ from Katana import Callbacks
 from Katana import QtGui, QtCore
 
 from .menu_generation import MenuGenerator
+from .panels import KatanaPanelWidget
 
 
 def __show_tank_message(title, msg):

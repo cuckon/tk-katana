@@ -1,0 +1,5 @@
+#Katana
+engines.tk-katana.location:
+  type: git
+  path: https://github.com/demon7x/tk-katana-ww.git
+  version: v0.0.1
