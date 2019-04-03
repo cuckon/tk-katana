@@ -2,4 +2,4 @@ includes:
 -./includes/settings/tk-katana.yml
 
 engines:
-  tk-katana: "@settings.tk-katana.project
+  tk-katana: "@settings.tk-katana.project"
