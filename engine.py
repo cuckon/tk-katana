@@ -26,7 +26,6 @@ class KatanaEngine(tank.platform.Engine):
     def __init__(self, *args, **kwargs):
         self._ui_enabled = bool(Configuration.get('KATANA_UI_MODE'))
         super(KatanaEngine, self).__init__(*args, **kwargs)
-        
 
     @property
     def has_ui(self):
@@ -38,8 +37,6 @@ class KatanaEngine(tank.platform.Engine):
     def init_engine(self):
         self.log_debug("%s: Initializing..." % self)
         os.environ["TANK_KATANA_ENGINE_INIT_NAME"] = self.instance_name
-
-    
 
     def add_katana_menu(self, **kwargs):
         self.log_info("Start creating Shotgun menu.")
@@ -85,9 +82,8 @@ class KatanaEngine(tank.platform.Engine):
             return
         callback()
 
-    
     def _define_qt_base(self):
-        
+
         try:
             from PySide2 import QtGui
         except:
@@ -98,15 +94,15 @@ class KatanaEngine(tank.platform.Engine):
             self.logger.debug("PySide2 detected - the existing version will be used.")
 
             return super(KatanaEngine, self)._define_qt_base()
-        
+
         class QTProxy(object):
             def __getattr__(self,name):
                 raise tank.TankError("LOOKS")
-        
-            
+
+
         base = {"qt_core" : QTProxy(),"qt_gui": QTProxy(),"dialog_base":None}
 
-        
+
         try:
             from PyQt4 import QtCore, QtGui
             import PyQt4
@@ -126,11 +122,9 @@ class KatanaEngine(tank.platform.Engine):
             import traceback
             self.log_warning("Error setting up PyQt. PyQt based UI support "
                              "will not be available: %s" % e)
-            self.log_debug(traceback.format_exc())    
+            self.log_debug(traceback.format_exc())
         print base
         return base
-
-
 
     #####################################################################################
     # Logging

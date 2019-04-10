@@ -15,13 +15,11 @@ import sgtk
 from sgtk.platform import SoftwareLauncher, SoftwareVersion, LaunchInformation
 
 
-
-
 class KatanaLauncher(SoftwareLauncher):
     """
-    Handles launching Natron executables. Automatically starts up
-    a tk-natron engine with the current context in the new session
-    of Natron.
+    Handles launching Katana executables. Automatically starts up
+    a tk-katana engine with the current context in the new session
+    of Katana.
     """
 
     # Named regex strings to insert into the executable template paths when
@@ -29,7 +27,7 @@ class KatanaLauncher(SoftwareLauncher):
     # strings, these allow us to alter the regex matching for any of the
     # variable components of the path in one place
     COMPONENT_REGEX_LOOKUP = {
-        "version": "\d+.\d+v\d+",
+        "version": r"\d+\.\d+v\d+",
     }
 
     # This dictionary defines a list of executable template strings for each
@@ -38,14 +36,11 @@ class KatanaLauncher(SoftwareLauncher):
     # with an appropriate glob or regex string.
 
     EXECUTABLE_TEMPLATES = {
-        "darwin": [
-            "/Applications/INRIA/Natron-{version}/Natron.app",
-        ],
         "win32": [
-            "C:/Program Files/INRIA/Natron-{version}/bin/Natron.exe",
+            "C:/Program Files/Katana{version}/bin/katanaBin.exe",
         ],
         "linux2": [
-            "/opt/katana{version}/katana",
+            "/opt/foundry/katana-program/katana",
         ]
     }
 
@@ -58,10 +53,10 @@ class KatanaLauncher(SoftwareLauncher):
 
     def prepare_launch(self, exec_path, args, file_to_open=None):
         """
-        Prepares an environment to launch Natron in that will automatically
-        load Toolkit and the tk-natron engine when Natron starts.
+        Prepares an environment to launch Katana in that will automatically
+        load Toolkit and the tk-katana engine when Katana starts.
 
-        :param str exec_path: Path to Natron executable to launch.
+        :param str exec_path: Path to Katana executable to launch.
         :param str args: Command line arguments as strings.
         :param str file_to_open: (optional) Full path name of a file to open on
                                             launch.
@@ -69,45 +64,40 @@ class KatanaLauncher(SoftwareLauncher):
         """
         required_env = {}
 
-        # Run the engine's init.py file when Natron starts up
+        # Run the engine's init.py file when Katana starts up
         startup_path = os.path.join(self.disk_location, "resources", "Katana")
 
         # Prepare the launch environment with variables required by the
         # classic bootstrap approach.
         self.logger.debug(
-            "Preparing Natron Launch via Toolkit Classic methodology ...")
-        required_env["TANK_ENGINE"] = self.engine_name
-        required_env["TANK_CONTEXT"] = sgtk.context.serialize(self.context)
+            "Preparing Katana Launch via Toolkit Classic methodology ...")
+        required_env["SGTK_ENGINE"] = self.engine_name
+        required_env["SGTK_CONTEXT"] = sgtk.context.serialize(self.context)
         required_env["PYTHONPATH"] = os.environ["PYTHONPATH"]
         required_env["KATANA_RESOURCES"] = startup_path
-
 
         if file_to_open:
             # Add the file name to open to the launch environment
             required_env["SGTK_FILE_TO_OPEN"] = file_to_open
 
-        args = '"%s"' % startup_path
         return LaunchInformation(exec_path, args, required_env)
 
     def _icon_from_engine(self):
         """
-        Use the default engine icon as natron does not supply
+        Use the default engine icon as katana does not supply
         an icon in their software directory structure.
 
         :returns: Full path to application icon as a string or None.
         """
-
-        # the engine icon
-        engine_icon = os.path.join(self.disk_location, "icon_64.png")
-        return engine_icon
+        return os.path.join(self.disk_location, "icon_64.png")
 
     def scan_software(self):
         """
-        Scan the filesystem for natron executables.
+        Scan the filesystem for katana executables.
 
         :return: A list of :class:`SoftwareVersion` objects.
         """
-        self.logger.debug("Scanning for Natron executables...")
+        self.logger.debug("Scanning for Katana executables...")
 
         supported_sw_versions = []
         for sw_version in self._find_software():
