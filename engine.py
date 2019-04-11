@@ -3,22 +3,18 @@
 # ----------------------------------------------------
 #
 """
-A Katana engine for Tank.
+A Katana engine for Shotgun Toolkit.
 """
 import os
-import sys
-import ctypes
-import shutil
-import logging
 import traceback
 
-import tank
+import sgtk
 
 from Katana import Configuration
 from Katana import Callbacks
 
 
-class KatanaEngine(tank.platform.Engine):
+class KatanaEngine(sgtk.platform.Engine):
     """
     An engine that supports Katana.
     """
@@ -35,11 +31,11 @@ class KatanaEngine(tank.platform.Engine):
         return self._ui_enabled
 
     def init_engine(self):
-        self.log_debug("%s: Initializing..." % self)
-        os.environ["TANK_KATANA_ENGINE_INIT_NAME"] = self.instance_name
+        self.logger.debug("%s: Initializing...", self)
+        os.environ["SGTK_KATANA_ENGINE_INIT_NAME"] = self.instance_name
 
     def add_katana_menu(self, **kwargs):
-        self.log_info("Start creating Shotgun menu.")
+        self.logger.info("Start creating Shotgun menu.")
 
         menu_name = "Shotgun"
         if self.get_setting("use_sgtk_as_menu_name", False):
@@ -64,44 +60,46 @@ class KatanaEngine(tank.platform.Engine):
             except AttributeError:
                 # Katana is probably not fully started and the main menu is not available yet
                 Callbacks.addCallback(Callbacks.Type.onStartupComplete, self.add_katana_menu)
-            except:
-                traceback.print_exc()
+            except Exception:
+                self.logger.error(
+                    'Failed to add Katana menu\n%s',
+                    traceback.format_exc()
+                )
 
     def destroy_engine(self):
-        self.log_debug("%s: Destroying..." % self)
+        self.logger.debug("%s: Destroying...", self)
         if self.has_ui:
             try:
                 self._menu_generator.destroy_menu()
-            except:
-                traceback.print_exc()
+            except Exception:
+                self.logger.error(
+                    'Failed to destoy menu\n%s',
+                    traceback.format_exc()
+                )
 
     def launch_command(self, cmd_id):
         callback = self._callback_map.get(cmd_id)
         if callback is None:
-            self.log_error("No callback found for id: %s" % cmd_id)
+            self.logger.error("No callback found for id: %s", cmd_id)
             return
         callback()
 
     def _define_qt_base(self):
-
         try:
             from PySide2 import QtGui
-        except:
+        except ImportError:
             # fine, we don't expect PySide2 to be present just yet
             self.logger.debug("PySide2 not detected - trying for PySide now...")
         else:
             # looks like pyside2 is already working! No need to do anything
             self.logger.debug("PySide2 detected - the existing version will be used.")
-
             return super(KatanaEngine, self)._define_qt_base()
 
         class QTProxy(object):
             def __getattr__(self,name):
-                raise tank.TankError("LOOKS")
-
+                raise sgtk.TankError("LOOKS")
 
         base = {"qt_core" : QTProxy(),"qt_gui": QTProxy(),"dialog_base":None}
-
 
         try:
             from PyQt4 import QtCore, QtGui
@@ -113,33 +111,19 @@ class KatanaEngine(tank.platform.Engine):
             base["qt_core"] = QtCore
             base["qt_gui"] = QtGui
             base["dialog_base"] = QtGui.QDialog
-            self.log_debug("Successfully initialized PyQt '%s' located in %s."
-                            % (QtCore.PYQT_VERSION_STR, PyQt4.__file__))
-        except ImportError:
-            print "iokj"
-            pass
-        except Exception, e:
+            self.logger.debug(
+                "Successfully initialized PyQt '%s' located in %s.",
+                QtCore.PYQT_VERSION_STR,
+                PyQt4.__file__,
+            )
+        except ImportError as error:
+            self.logger.warn(str(error))
+        except Exception:
             import traceback
-            self.log_warning("Error setting up PyQt. PyQt based UI support "
-                             "will not be available: %s" % e)
-            self.log_debug(traceback.format_exc())
-        print base
+            self.logger.warn(
+                "Error setting up PyQt. PyQt based UI support "
+                "will not be available\n%s",
+                traceback.format_exc(),
+            )
+        self.logger.debug('qt_base: %s', base)
         return base
-
-    #####################################################################################
-    # Logging
-
-    def log_debug(self, msg):
-        if self.get_setting("debug_logging", False):
-            print "Shotgun Debug: %s" % msg
-
-    def log_info(self, msg):
-        print "Shotgun Info: %s" % msg
-
-    def log_warning(self, msg):
-        print "Shotgun Warning: %s" % msg
-
-    def log_error(self, msg):
-        print "Shotgun Error: %s" % msg
-
-

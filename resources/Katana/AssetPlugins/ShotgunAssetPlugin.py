@@ -1,46 +1,32 @@
 # Copyright (c) 2015 The Foundry Visionmongers Ltd. All Rights Reserved.
-
-from time import gmtime, strftime
 import os
-import sys
-import getpass
-import logging
 import AssetAPI
 
 # Shotgun - This should already be in the PYTHONPATH due to the init script.
-import tank
-
-
-# Set-up plug-in logger
-#log = logging.getLogger('ShotgunAssetPlugin') # TODO
+import sgtk
 
 
 class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
     """
     The main class of the plug-in that will be registered as "Shotgun". It
-    extends AssetAPI.BaseAssetPlugin to create an asset plug-in class and 
-    implements all abstract functions from the plug-in interface. 
+    extends AssetAPI.BaseAssetPlugin to create an asset plug-in class and
+    implements all abstract functions from the plug-in interface.
     """
     def __init__(self):
         # Create a Tank instance
         self.tk = None
+        self.logger = sgtk.platform.get_logger(__name__)
         self.setupTank()
-
 
     def setupTank(self):
         '''
-        This function relies on the TANK_CONTEXT environment var being previously
+        This function relies on the SGTK_CONTEXT environment var being previously
         set by Shotgun.
         '''
-        context = None
-        # Attempt to find context in environment
-        if "TANK_CONTEXT" in os.environ:
-            serialised_context = os.environ.get("TANK_CONTEXT")
-            if serialised_context:
-                context = tank.context.deserialize(serialised_context)
-        if context:
+        serialised_context = os.environ.get("SGTK_CONTEXT")
+        if serialised_context:
+            context = sgtk.context.deserialize(serialised_context)
             self.tk = context.tank
-
 
     def reset(self):
         """
@@ -49,7 +35,6 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
         # Nothing to reset in this plug-in... If, for example, some caching was
         # implemented then this would be the place to clear it.
         pass
-
 
     def isAssetId(self, string): # TODO
         """
@@ -61,7 +46,6 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
             return True
         return None
 
-
     def resolveAsset(self, assetId, throwOnError=False):
         """
         Lookups the given asset ID in Shotgun and returns the file path that it references
@@ -71,20 +55,30 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
 
         if not self.isAssetId(assetId):
             # Return the assetId as it is if it is not recognized
-            log.warning("resolveAsset: asset ID %s is not a valid asset. Skipping resolving asset." % assetId)
+            self.logger.warn(
+                "resolveAsset: asset ID %s is not a valid asset. "
+                "Skipping resolving asset.",
+                assetId,
+            )
             return assetId
 
         # Get fields
         idFieldDict = self.getAssetFields(assetId)
         if not idFieldDict:
-            log.warning("resolveAsset: Resolving asset path from asset ID failed: %s" % assetId)
+            self.logger.warn(
+                "resolveAsset: Resolving asset path from asset ID failed: %s",
+                assetId,
+            )
             return None
 
         # Get template
         templateType = self.__getAssetPublishType(assetId)
         template = self.tk.templates[templateType]
         if not template:
-            log.warning("resolveAsset: Unable to find template: %s" % templateType)
+            self.logger.warn(
+                "resolveAsset: Unable to find template: %s",
+                templateType,
+            )
 
         assetFilePathList = self.tk.abstract_paths_from_template( template, idFieldDict )
         assetFilePath = ""
@@ -92,7 +86,6 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
             # (conversion from unicode to str needed)
             assetFilePath = str(assetFilePathList[0])
         return assetFilePath
-
 
     def resolveAllAssets(self, string):
         """
@@ -107,7 +100,6 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
                 result = result.replace(token, path)
 
         return result
-
 
     def resolvePath(self, assetId, frame):  # TODO -- This may need some work to work properly. How do Shotgun and Katana work with file sequences?
         """
@@ -130,7 +122,6 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
 
         return resolvedAsset
 
-
     def resolveAssetVersion(self, assetId, versionTag = ""):
         """
         Returns the version for the given asset ID.
@@ -139,11 +130,14 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
         # Get fields
         idFieldDict = self.getAssetFields(assetId)
         if not idFieldDict:
-            log.warning("resolveAssetVersion: Resolving asset path from asset ID failed: %s" % assetId)
+            self.logger.warn(
+                "resolveAssetVersion: "
+                "Resolving asset path from asset ID failed: %s",
+                assetId,
+            )
             return None
         # Version
         return idFieldDict.get("Version", None)
-
 
     def getAssetFields(self, assetId, includeDefaults=False):
         """
@@ -153,9 +147,11 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
         fullDict = eval(str(assetId)) # TODO: Not cool, but works in this case. Switch to json?
         fieldDict = fullDict.get("fields") or None
         if not fieldDict:
-            log.warning("getAssetFields: Couldn't find fields in asset ID: %s" % assetId)
+            self.logger.warn(
+                "getAssetFields: Couldn't find fields in asset ID: %s",
+                assetId,
+            )
         return fieldDict
-
 
     def __getAssetPublishType(self, assetId):
         '''
@@ -164,9 +160,11 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
         fullDict = eval(str(assetId)) # TODO: Not cool, but works in this case. Switch to json?
         templateType = fullDict.get("template") or None
         if not templateType:
-            log.warning("getAssetFields: Couldn't find template type in asset ID: %s" % assetId)
+            self.logger.warn(
+                "getAssetFields: Couldn't find template type in asset ID: %s",
+                assetId,
+            )
         return templateType
-
 
     def createTransaction(self):
         """
@@ -179,4 +177,3 @@ class ShotgunAssetPlugin(AssetAPI.BaseAssetPlugin):
 # Register the "Shotgun" plug-in - this is the name that will be
 # shown in Katana's Project Settings tab
 AssetAPI.RegisterAssetPlugin("Shotgun", ShotgunAssetPlugin())
-

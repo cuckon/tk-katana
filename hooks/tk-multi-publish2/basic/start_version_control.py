@@ -63,7 +63,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
 
         Only items matching entries in this list will be presented to the
         accept() method. Strings can contain glob patters such as *, for example
-        ["maya.*", "file.maya"]
+        ["katana.*", "file.katana"]
         """
         return ["katana.session"]
 
@@ -125,7 +125,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
                 )
                 self.logger.info(
                     "  There is already a version number in the file...")
-                self.logger.info("  Katana file path: %s" % (path,))
+                self.logger.info("  Katana file path: %s", path)
                 return {"accepted": False}
         else:
             # the session has not been saved before (no path determined).
@@ -137,7 +137,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
             )
 
         self.logger.info(
-            "Maya '%s' plugin accepted the current session." %
+            "Katana '%s' plugin accepted the current session." %
             (self.name,),
             extra=_get_version_docs_action()
         )
@@ -169,7 +169,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
         if not path:
             # the session still requires saving. provide a save button.
             # validation fails
-            error_msg = "The Maya session has not been saved."
+            error_msg = "The Katana session has not been saved."
             self.logger.error(
                 error_msg,
                 extra=_get_save_as_action()
@@ -220,7 +220,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
         # save to the new version path
         _save_session(version_path)
         self.logger.info("A version number has been added to the Katana file...")
-        self.logger.info("  Katana file path: %s" % (version_path,))
+        self.logger.info("Katana file path: %s", version_path)
 
     def finalize(self, settings, item):
         """
@@ -293,13 +293,13 @@ def _save_session(path):
     Save the current session to the supplied path.
     """
 
-    # Maya can choose the wrong file type so we should set it here
+    # Katana can choose the wrong file type so we should set it here
     # explicitly based on the extension
     KatanaFile.Save( path )
 
 
 
-# TODO: method duplicated in all the maya hooks
+# TODO: method duplicated in all the Katana hooks
 def _get_save_as_action():
     """
 
@@ -327,15 +327,20 @@ def _get_save_as_action():
 
 
 def _save_as():
-
     project_path = os.path.dirname(FarmAPI.GetKatanaFileName())
-    path = UI4.Util.AssetId.BrowseForAsset(path,'Select Katana File',False,{'fileTypes':'katana'})
+    path = UI4.Util.AssetId.BrowseForAsset(
+        project_path,
+        'Select Katana File',
+        False,
+        {'fileTypes': 'katana'},
+    )
     # make sure not using unicode!
     if isinstance(path, unicode):
         path = path.encode("utf-8")
 
     if path:
         KatanaFile.Save( path )
+
 
 def _get_version_docs_action():
     """

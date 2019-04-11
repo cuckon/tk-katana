@@ -1,12 +1,21 @@
 """
 Hook that loads defines all the available actions, broken down by publish type.
-Copied from tk-maya_actions
+Copied from tk-katana_actions
 """
-import sgtk
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+
+import errno
 import os
+import sgtk
 import NodegraphAPI
 
 HookBaseClass = sgtk.get_hook_baseclass()
+
 
 class KatanaActions(HookBaseClass):
 
@@ -15,33 +24,33 @@ class KatanaActions(HookBaseClass):
         Returns a list of action instances for a particular publish.
         This method is called each time a user clicks a publish somewhere in the UI.
         The data returned from this hook will be used to populate the actions menu for a publish.
-    
+
         The mapping between Publish types and actions are kept in a different place
         (in the configuration) so at the point when this hook is called, the loader app
         has already established *which* actions are appropriate for this object.
-        
-        The hook should return at least one action for each item passed in via the 
+
+        The hook should return at least one action for each item passed in via the
         actions parameter.
-        
+
         This method needs to return detailed data for those actions, in the form of a list
         of dictionaries, each with name, params, caption and description keys.
-        
-        Because you are operating on a particular publish, you may tailor the output 
+
+        Because you are operating on a particular publish, you may tailor the output
         (caption, tooltip etc) to contain custom information suitable for this publish.
-        
-        The ui_area parameter is a string and indicates where the publish is to be shown. 
-        - If it will be shown in the main browsing area, "main" is passed. 
+
+        The ui_area parameter is a string and indicates where the publish is to be shown.
+        - If it will be shown in the main browsing area, "main" is passed.
         - If it will be shown in the details area, "details" is passed.
-        - If it will be shown in the history area, "history" is passed. 
-        
-        Please note that it is perfectly possible to create more than one action "instance" for 
-        an action! You can for example do scene introspection - if the action passed in 
+        - If it will be shown in the history area, "history" is passed.
+
+        Please note that it is perfectly possible to create more than one action "instance" for
+        an action! You can for example do scene introspection - if the action passed in
         is "character_attachment" you may for example scan the scene, figure out all the nodes
         where this object can be attached and return a list of action instances:
-        "attach to left hand", "attach to right hand" etc. In this case, when more than 
-        one object is returned for an action, use the params key to pass additional 
+        "attach to left hand", "attach to right hand" etc. In this case, when more than
+        one object is returned for an action, use the params key to pass additional
         data into the run_action hook.
-        
+
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
         :param actions: List of action strings which have been defined in the app configuration.
         :param ui_area: String denoting the UI Area (see above).
@@ -50,31 +59,31 @@ class KatanaActions(HookBaseClass):
         app = self.parent
         app.log_debug("Generate actions called for UI element %s. "
                       "Actions: %s. Publish Data: %s" % (ui_area, actions, sg_publish_data))
-        
+
         action_instances = []
-        
+
         if "open_project" in actions:
-            action_instances.append( {"name": "open_project", 
+            action_instances.append( {"name": "open_project",
                                       "params": None,
-                                      "caption": "Open Project", 
+                                      "caption": "Open Project",
                                       "description": "This will open the Katana project file."} )
 
         if "import_look_file" in actions:
-            action_instances.append( {"name": "import_look_file", 
+            action_instances.append( {"name": "import_look_file",
                                       "params": None,
-                                      "caption": "Import Look File", 
+                                      "caption": "Import Look File",
                                       "description": "This will create an LookFileAssign node corresponding to this published Look File."} )
 
         if "create_node_Alembic_In" in actions:
-            action_instances.append( {"name": "create_node_Alembic_In", 
+            action_instances.append( {"name": "create_node_Alembic_In",
                                       "params": None,
-                                      "caption": "Import Alembic", 
+                                      "caption": "Import Alembic",
                                       "description": "This will create an Alembic_In node corresponding to this cache."} )
 
         if "create_node_ImageRead" in actions:
             action_instances.append( {"name": "create_node_ImageRead",
-                                      "params": None, 
-                                      "caption": "Import image", 
+                                      "params": None,
+                                      "caption": "Import image",
                                       "description": "Creates an ImageRead node for the selected item."} )
 
         return action_instances
@@ -114,7 +123,7 @@ class KatanaActions(HookBaseClass):
         """
         Execute a given action. The data sent to this be method will
         represent one of the actions enumerated by the generate_actions method.
-        
+
         :param name: Action name string representing one of the items returned by generate_actions.
         :param params: Params data, as specified by generate_actions.
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
@@ -123,10 +132,10 @@ class KatanaActions(HookBaseClass):
         app = self.parent
         app.log_debug("Execute action called for action %s. "
                       "Parameters: %s. Publish Data: %s" % (name, params, sg_publish_data))
-        
+
         # resolve path
         path = self.get_publish_path(sg_publish_data)
-        
+
         if name == "open_project":
             self._open_project(path, sg_publish_data)
 
@@ -134,10 +143,10 @@ class KatanaActions(HookBaseClass):
             self._open_project(path, sg_publish_data)
 
         if name == "create_node_Alembic_In":
-            self._create_node("Alembic_In", path, sg_publish_data, asset_parameter="abcAsset")
-        
+            self._create_node("Alembic_In", path, sg_publish_data, path_parameter="abcAsset")
+
         if name == "create_node_ImageRead":
-            self._create_node("ImageRead", path, sg_publish_data, asset_parameter="file")
+            self._create_node("ImageRead", path, sg_publish_data, path_parameter="file")
 
 
     ##############################################################################################################
@@ -148,21 +157,21 @@ class KatanaActions(HookBaseClass):
         """
         return
 
-    def _create_node(self, node_type, path, sg_publish_data, asset_parameter="file"):
+    def _create_node(self, node_type, path, sg_publish_data, path_parameter="file"):
         """
         Generic node creation method.
         """
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
-                
-        name = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+            raise IOError(errno.ENOENT, "File not found on disk", path)
 
+        entity = {
+            "type": sg_publish_data.get("entity", {}).get("name", "UNKNOWN"),
+            "name": sg_publish_data.get("name", "UNKNOWN")
+        }
 
         # Create node
         root = NodegraphAPI.GetRootNode()
         node = NodegraphAPI.CreateNode(node_type, parent=root)
-        parm = node.getParameter("abcAsset")
-        parm.setValue(path, 0)
+        node.setName("{entity[type]} {entity[name]}".format(entity=entity))
+        node.getParameter(path_parameter).setValue(path, 0)
         return node
-
-

@@ -38,7 +38,7 @@ settings.tk-katana.asset_step:
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
-  template_project: asset_work_area_maya
+  template_project: asset_work_area_katana
   location: "@engines.tk-katana.location"
 
 # project
@@ -63,5 +63,5 @@ settings.tk-katana.shot_step:
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
-  template_project: shot_work_area_maya
+  template_project: shot_work_area_katana
   location: "@engines.tk-katana.location"

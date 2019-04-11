@@ -4,11 +4,12 @@
 #
 import os
 import sys
-import tank
 import traceback
 
+import sgtk
+
 from Katana import Configuration
-from Katana import FarmAPI 
+from Katana import FarmAPI
 from Katana import Callbacks
 from Katana import QtGui, QtCore
 
@@ -52,7 +53,7 @@ def __create_tank_disabled_menu(details):
 
 def __create_tank_error_menu():
     """
-    Creates a std "error" tank menu and grabs the current context.
+    Creates a std "error" sgtk menu and grabs the current context.
     Make sure that this is called from inside an except clause.
     """
     (exc_type, exc_value, exc_traceback) = sys.exc_info()
@@ -76,11 +77,11 @@ def __create_tank_error_menu():
 
 def __engine_refresh(tk, new_context):
     """
-    Checks the the tank engine should be
+    Checks the the sgtk engine should be
     """
-    engine_name = os.environ.get("TANK_KATANA_ENGINE_INIT_NAME")
+    engine_name = os.environ.get("SGTK_KATANA_ENGINE_INIT_NAME")
 
-    curr_engine = tank.platform.current_engine()
+    curr_engine = sgtk.platform.current_engine()
     if curr_engine:
         # an old engine is running.
         if new_context == curr_engine.context:
@@ -92,9 +93,9 @@ def __engine_refresh(tk, new_context):
 
     # try to create new engine
     try:
-        tank.platform.start_engine(engine_name, tk, new_context)
-    except tank.TankEngineInitError, e:
-        # context was not sufficient! - disable tank!
+        sgtk.platform.start_engine(engine_name, tk, new_context)
+    except sgtk.TankEngineInitError as e:
+        # context was not sufficient! - disable sgtk!
         __create_tank_disabled_menu(e)
 
 
@@ -115,22 +116,22 @@ def __tank_on_scene_event_callback(**kwargs):
         # this file could be in another project altogether, so create a new Tank
         # API instance.
         try:
-            tk = tank.tank_from_path(file_name)
-        except tank.TankError, e:
-            __create_tank_disabled_menu(e)
+            tk = sgtk.tank_from_path(file_name)
+        except sgtk.TankError as error:
+            __create_tank_disabled_menu(error)
             return
 
         # try to get current ctx and inherit its values if possible
         curr_ctx = None
-        if tank.platform.current_engine():
-            curr_ctx = tank.platform.current_engine().context
+        if sgtk.platform.current_engine():
+            curr_ctx = sgtk.platform.current_engine().context
 
         # and now extract a new context based on the file
         new_ctx = tk.context_from_path(file_name, curr_ctx)
 
         # now restart the engine with the new context
         __engine_refresh(tk, new_ctx)
-    except Exception, e:
+    except Exception:
         __create_tank_error_menu()
 
 

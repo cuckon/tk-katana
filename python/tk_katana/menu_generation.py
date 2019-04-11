@@ -5,18 +5,15 @@
 from collections import defaultdict
 import os
 import sys
+import traceback
 import unicodedata
 
-import tank
-
 try:
-
     from Katana import QtGui, QtCore ,QtWidgets
-
-except:
-    
+except ImportError:
     from Katana import QtGui, QtCore
     QtWidgets = QtGui
+
 
 class MenuGenerator(object):
     """
@@ -28,7 +25,7 @@ class MenuGenerator(object):
         Initializes a new menu generator.
 
         :param engine: The currently-running engine.
-        :type engine: :class:`tank.platform.Engine`
+        :type engine: :class:`sgtk.platform.Engine`
         :param menu_name: The name of the menu to be created.
         """
         self._engine = engine
@@ -86,9 +83,9 @@ class MenuGenerator(object):
         # Get the "main menu" (the bar of menus)
         try:
             main_menu = self.get_katana_main_bar()
-        except Exception as error:
-            message = 'Failed to get main Katana menu bar: {}'.format(error)
-            self.engine.log_debug(message)
+        except Exception:
+            message = 'Failed to get main Katana menu bar\n%s'
+            self.engine.logger.warn(message, traceback.format_exc())
             return
 
         # Attempt to find existing menu
@@ -107,8 +104,7 @@ class MenuGenerator(object):
         try:
             import UI4.App.MainWindow
             return UI4.App.MainWindow.GetMainWindow().getMenuBar()
-        
-        except:
+        except Exception:
             layoutsMenus = [x for x in QtGui.qApp.topLevelWidgets() if type(x).__name__ == 'LayoutsMenu']
             return layoutsMenus[0].parent()
 
@@ -169,7 +165,7 @@ class MenuGenerator(object):
 
             exit_code = os.system(cmd)
             if exit_code != 0:
-                self.engine.log_error("Failed to launch '%s'!" % cmd)
+                self.engine.logger.error("Failed to launch '%s'!", cmd)
 
     ###########################################################################
     # app menus
@@ -204,7 +200,7 @@ class AppCommand(object):
         """Create a named wrapped command using given engine and information.
 
         :param engine: The currently-running engine.
-        :type engine: :class:`tank.platform.Engine`
+        :type engine: :class:`sgtk.platform.Engine`
         :param name: The name/label of the app command.
         :type name: str
         :param command_dict: Command's information, e.g. properties, callback.
@@ -325,33 +321,6 @@ class AppCommand(object):
                 doc_url = unicodedata.normalize('NFKD', doc_url)
                 doc_url = doc_url.encode('ascii', 'ignore')
         return doc_url
-
-    def _non_pane_menu_callback_wrapper(self, callback):
-        """
-        Callback for all non-pane menu commands.
-
-        :param callback:    A callable object that is triggered
-                            when the wrapper is invoked.
-        """
-        # This is a wrapped menu callback for whenever an item is clicked
-        # in a menu which isn't the standard nuke pane menu. This ie because
-        # the standard pane menu in nuke provides nuke with an implicit state
-        # so that nuke knows where to put the panel when it is created.
-        # If the command is called from a non-pane menu however, this
-        # implicitly state does not exist and needs to be explicitly defined.
-        #
-        # For this purpose, we set a global flag to hint to the panelling
-        # logic to run its special window logic in this case.
-        #
-        # Note that because of nuke not using the import_module()
-        # system, it's hard to obtain a reference to the engine object
-        # right here - this is why we set a flag on the main tank
-        # object like this.
-        setattr(tank, "_callback_from_non_pane_menu", True)
-        try:
-            callback()
-        finally:
-            delattr(tank, "_callback_from_non_pane_menu")
 
     def add_command_to_menu(self, menu):
         """

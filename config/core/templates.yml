@@ -14,7 +14,7 @@
     # The location of backups of WIP files
     katana_shot_snapshot:
         definition: '@shot_root/work/katana/snapshots/{Shot}_{Step}_v{version}.{timestamp}.katana'
-    # The location of published maya files
+    # The location of published Katana files
     katana_shot_publish:
         definition: '@shot_root/publish/katana/{Shot}_{Step}_v{version}.katana' 
 
@@ -34,6 +34,6 @@
     # The location of backups of WIP files
     katana_asset_snapshot:
         definition: '@asset_root/work/katana/snapshots/{name}.v{version}.{timestamp}.katana'
-    # The location of published maya files
+    # The location of published Katana files
     katana_asset_publish:
         definition: '@asset_root/publish/katana/{name}.v{version}.katana'

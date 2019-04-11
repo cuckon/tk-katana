@@ -1,26 +1,23 @@
 # Copyright (c) 2017 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import glob
 import os
 import sgtk
-from Katana import FarmAPI
-
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 
 class KatanaSessionCollector(HookBaseClass):
     """
-    Collector that operates on the maya session. Should inherit from the basic
-    collector hook.
+    Collector that operates on the katana session. Should inherit from the
+    basic collector hook.
     """
 
     @property
@@ -66,24 +63,24 @@ class KatanaSessionCollector(HookBaseClass):
 
     def process_current_session(self, settings, parent_item):
         """
-        Analyzes the current session open in Maya and parents a subtree of
+        Analyzes the current session open in Katana and parents a subtree of
         items under the parent_item passed in.
 
         :param dict settings: Configured settings for this collector
         :param parent_item: Root item instance
 
         """
-
-        # create an item representing the current maya session
-        item = self.collect_current_katana_session(settings, parent_item)
+        # create an item representing the current katana session
+        # item = self.collect_current_katana_session(settings, parent_item)
+        self.collect_current_katana_session(settings, parent_item)
 
     def collect_current_katana_session(self, settings, parent_item):
         """
-        Creates an item that represents the current maya session.
+        Creates an item that represents the current katana session.
 
         :param parent_item: Parent Item instance
 
-        :returns: Item of type maya.session
+        :returns: Item of type katana.session
         """
 
         publisher = self.parent
@@ -110,7 +107,7 @@ class KatanaSessionCollector(HookBaseClass):
             self.disk_location,
             os.pardir,
             "icons",
-            "maya.png"
+            "katana.png"
         )
         session_item.set_icon_from_path(icon_path)
 
@@ -133,8 +130,8 @@ class KatanaSessionCollector(HookBaseClass):
             # the attached publish plugins will need to resolve the fields at
             # execution time.
             session_item.properties["work_template"] = work_template
-            self.logger.debug("Work template defined for Maya collection.")
+            self.logger.debug("Work template defined for Katana collection.")
 
-        self.logger.info("Collected current Maya scene")
+        self.logger.info("Collected current Katana scene")
 
         return session_item

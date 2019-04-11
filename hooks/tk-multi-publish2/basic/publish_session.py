@@ -1,26 +1,24 @@
 # Copyright (c) 2017 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
 import sgtk
-from sgtk.util.filesystem import ensure_folder_exists
 
-from Katana import FarmAPI , KatanaFile
-
+from Katana import FarmAPI, KatanaFile
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 
 class KatanaSessionPublishPlugin(HookBaseClass):
     """
-    Plugin for publishing an open natron session.
+    Plugin for publishing an open katana session.
 
     This hook relies on functionality found in the base file publisher hook in
     the publish2 app and should inherit from it in the configuration. The hook
@@ -133,7 +131,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
 
         Only items matching entries in this list will be presented to the
         accept() method. Strings can contain glob patters such as *, for example
-        ["natron.*", "file.natron"]
+        ["katana.*", "file.katana"]
         """
         return ["katana.session"]
 
@@ -388,7 +386,7 @@ def _save_session(path):
     # Ensure that the folder is created when saving
     KatanaFile.Save( path )
 
-# TODO: method duplicated in all the natron hooks
+# TODO: method duplicated in all the katana hooks
 def _get_save_as_action():
     """
     Simple helper for returning a log action dict for saving the session

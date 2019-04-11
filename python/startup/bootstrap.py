@@ -9,7 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
-import sys
+
 
 def bootstrap(engine_name, context, app_path, app_args, extra_args):
     """
