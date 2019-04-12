@@ -4,7 +4,6 @@
 #
 from collections import defaultdict
 import os
-import sys
 import traceback
 import unicodedata
 
@@ -112,7 +111,6 @@ class MenuGenerator(object):
 
         raise RuntimeError('Failed to get main Katana menu bar')
 
-
     def destroy_menu(self):
         """
         Destroys the Shotgun menu.
@@ -130,47 +128,57 @@ class MenuGenerator(object):
         # create the context menu
         ctx = self.engine.context
         menu = self.root_menu.addMenu(str(ctx))
-        action_items = (
-            ('Jump to File System', self._jump_to_fs),
-            ('Jump to Shotgun', self._jump_to_sg),
-        )
-        for label, callback in action_items:
-            menu.addAction(label).triggered.connect(lambda: callback())
+        style = menu.style()
+
+        action = menu.addAction('Jump to File System')
+        action.triggered.connect(self._jump_to_fs)
+        action.setIcon(style.standardIcon(style.SP_DialogOpenButton))
+
+        action = menu.addAction('Jump to Shotgun')
+        action.triggered.connect(self._jump_to_sg)
+        try:
+            import sgtk.platform.qt.resources_rc
+        except ImportError:
+            self.engine.logger.warn(traceback.format_exc())
+        else:
+            action.setIcon(QtGui.QIcon(':/Tank.Platform.Qt/tank_logo.png'))
 
         menu.addSeparator()
         return menu
 
+    def _open_path(self, path):
+        """Open a given folder path/url using QDesktopServices.
+
+        This should offer a unified, cross platform way of opening links and
+        folders on disks that doesn't raise errors on fail, only logs warnings.
+
+        :param path: Folder path/URL to open.
+        :type path: str
+        """
+        url = QtCore.QUrl(path)
+        error = ''
+        if not url.isValid():
+            error = 'Unable to open path as it did not convert to QUrl: "%s"'
+        elif not QtGui.QDesktopServices.openUrl(url):
+            error = 'Failed to open path "%s". Check logs and console output.'
+
+        if error:
+            self.engine.logger.warn(error, path)
+
     def _jump_to_sg(self):
         """
-        Jump to Shotgun, launch web browser.
+        Opens current context's Shotgun URL.
         """
-        url = self.engine.context.shotgun_url
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+        self._open_path(self.engine.context.shotgun_url)
 
     def _jump_to_fs(self):
         """
-        Jump from context to FS.
+        Opens current context's folders on the file system.
         """
         # launch one window for each location on disk
-        paths = self.engine.context.filesystem_locations
-        for disk_location in paths:
-
-            # get the setting
-            system = sys.platform
-
-            # run the app
-            if system == "linux2":
-                cmd = 'xdg-open "%s"' % disk_location
-            elif system == "darwin":
-                cmd = 'open "%s"' % disk_location
-            elif system == "win32":
-                cmd = 'cmd.exe /C start "Folder" "%s"' % disk_location
-            else:
-                raise Exception("Platform '%s' is not supported." % system)
-
-            exit_code = os.system(cmd)
-            if exit_code != 0:
-                self.engine.logger.error("Failed to launch '%s'!", cmd)
+        for disk_location in self.engine.context.filesystem_locations:
+            path = os.path.abspath(os.path.expanduser(disk_location))
+            self._open_path('file:///' + path.replace('\\', '/'))
 
     ###########################################################################
     # app menus
