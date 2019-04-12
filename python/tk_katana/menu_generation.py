@@ -8,6 +8,7 @@ import sys
 import traceback
 import unicodedata
 
+import UI4.App
 try:
     from Katana import QtGui, QtCore ,QtWidgets
 except ImportError:
@@ -81,32 +82,36 @@ class MenuGenerator(object):
         If it can't be found, it creates one.
         """
         # Get the "main menu" (the bar of menus)
-        try:
-            main_menu = self.get_katana_main_bar()
-        except Exception:
-            message = 'Failed to get main Katana menu bar\n%s'
-            self.engine.logger.warn(message, traceback.format_exc())
-            return
+        main_menu_bar = self.get_katana_main_bar()
 
         # Attempt to find existing menu
-        for menu in main_menu.children():
+        for menu in main_menu_bar.children():
             is_menu = isinstance(menu, QtWidgets.QMenu)
             if is_menu and menu.title() == self.menu_name:
                 return menu
 
         # Otherwise, create a new menu
-        menu = QtWidgets.QMenu(self.menu_name, main_menu)
-        main_menu.addMenu(menu)
-        return menu
+        return main_menu_bar.addMenu(self.menu_name)
 
     @classmethod
     def get_katana_main_bar(cls):
-        try:
-            import UI4.App.MainWindow
-            return UI4.App.MainWindow.GetMainWindow().getMenuBar()
-        except Exception:
-            layoutsMenus = [x for x in QtGui.qApp.topLevelWidgets() if type(x).__name__ == 'LayoutsMenu']
-            return layoutsMenus[0].parent()
+        """Get Katana GUI's main menu bar.
+
+        :raises RuntimeError: Cannot get Katana GUI's main menu bar.
+        :return: Katana GUI's main menu bar.
+        :rtype: UI4.App.MainMenu.MainMenu
+        """
+        main_window = UI4.App.MainWindow.GetMainWindow()
+        if main_window is not None:
+            return main_window.getMenuBar()
+
+        # Using LayoutsMenu to get main Katana menu bar instead'
+        for layout_menu in QtGui.qApp.topLevelWidgets():
+            if isinstance(layout_menu, UI4.App.MainMenu.LayoutsMenu):
+                return layout_menu.parent()
+
+        raise RuntimeError('Failed to get main Katana menu bar')
+
 
     def destroy_menu(self):
         """

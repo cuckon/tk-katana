@@ -12,6 +12,7 @@ import sgtk
 
 from Katana import Configuration
 from Katana import Callbacks
+import UI4.App.MainWindow
 
 
 class KatanaEngine(sgtk.platform.Engine):
@@ -29,6 +30,16 @@ class KatanaEngine(sgtk.platform.Engine):
         Whether Katana is running as a GUI/interactive session.
         """
         return self._ui_enabled
+
+    @classmethod
+    def main_window_ready(cls):
+        """
+        Whether Katana is fully started and the main window/menu is available.
+
+        :return: Whether the main window is available.
+        :rtype: bool
+        """
+        return bool(UI4.App.MainWindow.GetMainWindow())
 
     def init_engine(self):
         self.logger.debug("%s: Initializing...", self)
@@ -56,19 +67,27 @@ class KatanaEngine(sgtk.platform.Engine):
     def post_app_init(self):
         if self.has_ui:
             try:
-                self.add_katana_menu()
-            except AttributeError:
-                # Katana is probably not fully started and the main menu is not available yet
-                Callbacks.addCallback(Callbacks.Type.onStartupComplete, self.add_katana_menu)
+                if self.main_window_ready():
+                    self.add_katana_menu()
+                else:
+                    self.logger.debug(
+                        'Adding onStartupComplete callback for '
+                        '"KatanaEngine.add_katana_menu" as '
+                        'main Katana window is not ready yet.'
+                    )
+                    Callbacks.addCallback(
+                        Callbacks.Type.onStartupComplete,
+                        self.add_katana_menu,
+                    )
             except Exception:
                 self.logger.error(
                     'Failed to add Katana menu\n%s',
-                    traceback.format_exc()
+                    traceback.format_exc(),
                 )
 
     def destroy_engine(self):
-        self.logger.debug("%s: Destroying...", self)
-        if self.has_ui:
+        if self.has_ui and self.main_window_ready():
+            self.logger.debug("%s: Destroying...", self)
             try:
                 self._menu_generator.destroy_menu()
             except Exception:
