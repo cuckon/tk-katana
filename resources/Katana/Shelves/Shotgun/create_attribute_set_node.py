@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+NAME: Create Shotgun AttributeSet Node
+ICON: icon.png
+KEYBOARD_SHORTCUT:
+SCOPE:
+Create a new node for setting Shotgun attributes at /root
+
+"""
+
 import sgtk
 
 try:
@@ -7,13 +17,15 @@ except ImportError:
 
 engine = sgtk.platform.current_engine()
 tank, shotgun, context =  engine.sgtk, engine.shotgun, engine.context
+for k, v in tank.templates.iteritems():
+    if 'katana' in k.lower():
+        print(k, v)
 
 context.user
 context.source_entity
 context.step
 # shotgun.find_one(self, entity_type, filters, fields=None, order=None, filter_operator=None, retired_only=False, include_archived_projects=True, additional_filter_presets=None)
 shotgun.find_one(context.step['type'], [['id', 'is', context.step['id']]], fields=['sg_folder_name'] )['sg_folder_name']
-
 
 # https://learn.foundry.com/katana/dev-guide/ArgsFiles/WidgetsAndHints.html?highlight=scriptbutton#common-hints
 # https://learn.foundry.com/katana/dev-guide/Scripting/WorkingWithNodes/Parameters/ParameterHints.html
@@ -27,4 +39,4 @@ sgg = root.createChildGroup('Shotgun')
 sgg.setName('Context')
 cstr = sgg.createChildString('Department Folder', '')
 cstr.setHintString(repr({'readOnly': True}))
-cstr.setValue(shotgun.find_one(context.step['type'], [['id', 'is', context.step['id']]], fields=['sg_folder_name'] )['sg_folder_name'], 0)1
+cstr.setValue(shotgun.find_one(context.step['type'], [['id', 'is', context.step['id']]], fields=['sg_folder_name'] )['sg_folder_name'], 0)
