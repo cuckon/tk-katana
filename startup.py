@@ -12,7 +12,7 @@ import os
 import sys
 
 import sgtk
-from sgtk.platform import SoftwareLauncher, SoftwareVersion, LaunchInformation
+from sgtk.platform import constants, SoftwareLauncher, SoftwareVersion, LaunchInformation
 
 
 class KatanaLauncher(SoftwareLauncher):
@@ -51,6 +51,31 @@ class KatanaLauncher(SoftwareLauncher):
         """
         return "2.6v4"
 
+    def _get_resource_paths(self):
+        """
+        Retrieve any resource paths for any installed apps. 
+
+        Resources live in the "resources/Katana" directory relative the the app's
+        root directory.
+
+        :returns: List of paths.
+        """
+        paths = []
+        env_name = self.context.sgtk.execute_core_hook(
+            constants.PICK_ENVIRONMENT_CORE_HOOK_NAME,
+            context=self.context
+        )
+        env = self.context.sgtk.pipeline_configuration.get_environment(env_name, self.context)
+        apps = env.get_apps("tk-katana")
+        for app in apps:
+            app_descriptor = env.get_app_descriptor("tk-katana", app)
+            path = app_descriptor.get_path()
+            resource_path = os.path.join(path, "resources", "Katana")
+            if os.path.exists(resource_path):
+                self.logger.debug("Found resource path for '{}': '{}'".format(app.upper(), resource_path))
+                paths.append(resource_path)
+        return paths
+
     def prepare_launch(self, exec_path, args, file_to_open=None):
         """
         Prepares an environment to launch Katana in that will automatically
@@ -74,6 +99,9 @@ class KatanaLauncher(SoftwareLauncher):
         required_env["SGTK_ENGINE"] = self.engine_name
         required_env["SGTK_CONTEXT"] = sgtk.context.serialize(self.context)
         required_env["PYTHONPATH"] = os.environ["PYTHONPATH"]
+        resource_paths = self._get_resource_paths()
+        for path in resource_paths:
+            startup_path += ":{}".format(path)
         required_env["KATANA_RESOURCES"] = startup_path
 
         if file_to_open:
