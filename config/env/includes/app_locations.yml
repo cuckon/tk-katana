@@ -1,0 +1,12 @@
+# REPLACE any existing mappings with these
+
+################################################################################
+# location descriptors for apps used in this configuration
+
+# ---- Multi apps
+
+# workfiles2
+apps.tk-multi-workfiles2.location:
+  type: git
+  path: git@github.com:wwfxuk/tk-multi-workfiles2.git
+  version: v0.11.10+wwfx.1.0.0
