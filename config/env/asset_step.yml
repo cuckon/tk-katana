@@ -1,5 +1,7 @@
+# Append these Katana settings to existing lists/mappings
+
 includes:
--./includes/settings/tk-katana.yml
+- ./includes/settings/tk-katana.yml
 
 engines:
   tk-katana: "@settings.tk-katana.asset_step"

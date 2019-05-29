@@ -7,12 +7,9 @@ import os
 import traceback
 import unicodedata
 
+# sgtk.platform.qt imports deferred to fix engine import_module errors
+
 import UI4.App
-try:
-    from Katana import QtGui, QtCore ,QtWidgets
-except ImportError:
-    from Katana import QtGui, QtCore
-    QtWidgets = QtGui
 
 
 class MenuGenerator(object):
@@ -80,12 +77,13 @@ class MenuGenerator(object):
 
         If it can't be found, it creates one.
         """
+        from sgtk.platform.qt import QtGui
         # Get the "main menu" (the bar of menus)
         main_menu_bar = self.get_katana_main_bar()
 
         # Attempt to find existing menu
         for menu in main_menu_bar.children():
-            is_menu = isinstance(menu, QtWidgets.QMenu)
+            is_menu = isinstance(menu, QtGui.QMenu)
             if is_menu and menu.title() == self.menu_name:
                 return menu
 
@@ -100,6 +98,7 @@ class MenuGenerator(object):
         :return: Katana GUI's main menu bar.
         :rtype: UI4.App.MainMenu.MainMenu
         """
+        from sgtk.platform.qt import QtGui
         main_window = UI4.App.MainWindow.GetMainWindow()
         if main_window is not None:
             return main_window.getMenuBar()
@@ -125,6 +124,7 @@ class MenuGenerator(object):
         """
         Adds a context menu which displays the current context.
         """
+        from sgtk.platform.qt import QtGui
         # create the context menu
         ctx = self.engine.context
         menu = self.root_menu.addMenu(str(ctx))
@@ -155,6 +155,7 @@ class MenuGenerator(object):
         :param path: Folder path/URL to open.
         :type path: str
         """
+        from sgtk.platform.qt import QtGui, QtCore
         url = QtCore.QUrl(path)
         error = ''
         if not url.isValid():
@@ -339,6 +340,7 @@ class AppCommand(object):
         """
         Add a new QAction representing this AppCommand to a given QMenu.
         """
+        from sgtk.platform.qt import QtGui
         action = menu.addAction(self.name)
 
         key_sequence = self.properties.get("hotkey")

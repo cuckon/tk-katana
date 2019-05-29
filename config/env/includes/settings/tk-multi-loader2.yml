@@ -1,0 +1,31 @@
+# Add this Katana settings section to somewhere in the file
+
+# katana
+settings.tk-multi-loader2.katana:
+  actions_hook: '{engine}/tk-multi-loader2/tk-katana_actions.py'
+  action_mappings:
+    Alembic Cache: [create_node_Alembic_In]
+    Image: [create_node_ImageRead]
+    Katana Scene: [open_project]
+    Katana Look File: [import_look_file]
+    Rendered Image: [create_node_ImageRead]
+    Texture: [create_node_ImageRead]
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    filters:
+    - [project, is, "{context.project}"]
+    hierarchy: [sg_asset_type, code]
+  - caption: Shots
+    entity_type: Shot
+    filters:
+    - [project, is, "{context.project}"]
+    hierarchy: [sg_sequence, code]
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, "{context.user}"]
+    - [project, is, "{context.project}"]
+    hierarchy: [entity, content]
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"

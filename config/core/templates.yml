@@ -1,39 +1,55 @@
+# Append these Katana settings to existing lists/mappings
+
+keys:
+    katana.output:
+        alias: output
+        type: str
+        filter_by: '[A-Za-z_0-9]+?'
+
+
+paths:
     #
     # Katana
     #
 
-    # define the location of a work area
+    ##
+    ## Shot
+    ##
+
     shot_work_area_katana:
-        definition: '@shot_root/work/katana'
-    # define the location of a publish area
-    shot_publish_area_katana:
-        definition: '@shot_root/publish/katana'
-    # The location of WIP files
+        definition: '@shot_work_area/katana'
     katana_shot_work:
-        definition: '@shot_root/work/katana/{Shot}_{Step}_v{version}.katana'
-    # The location of backups of WIP files
+        definition: '@shot_work_area/katana/scenes/{Shot}_{Step}[_{name}]_{User}_v{version}.katana'
     katana_shot_snapshot:
-        definition: '@shot_root/work/katana/snapshots/{Shot}_{Step}_v{version}.{timestamp}.katana'
-    # The location of published Katana files
+        definition: '@shot_work_area/katana/snapshots/{Shot}_{Step}[_{name}]_{User}_v{version}.{timestamp}.katana'
+    shot_publish_area_katana:
+        definition: '@shot_publish_area/katana'
     katana_shot_publish:
-        definition: '@shot_root/publish/katana/{Shot}_{Step}_v{version}.katana' 
+        definition: '@shot_publish_area/katana/scenes/{Shot}_{Step}[_{name}]_v{version}.katana'
 
-    #
-    # Katana
-    #
+    # Rendered images
+    katana_shot_render:
+        definition: '@shot_work_area/katana/render/{name}/v{version}/{katana.output}/{Shot}_{katana.output}_v{version}.{SEQ}.exr'
+    katana_shot_publish_render:
+        definition: '@shot_publish_area/katana/render/{name}/v{version}/{katana.output}/{Shot}_{katana.output}_v{version}.{SEQ}.exr'
 
-    # define the location of a work area
+    ##
+    ## Asset
+    ##
+
     asset_work_area_katana:
-        definition: '@asset_root/work/katana'
-    # define the location of a publish area
-    asset_publish_area_katana:
-        definition: '@asset_root/publish/katana'
-    # The location of WIP files
+        definition: '@asset_work_area/katana'
     katana_asset_work:
-        definition: '@asset_root/work/katana/{name}.v{version}.katana'
-    # The location of backups of WIP files
+        definition: '@asset_work_area/katana/scenes/{Asset}_{Step}[_{name}]_{User}_v{version}.katana'
     katana_asset_snapshot:
-        definition: '@asset_root/work/katana/snapshots/{name}.v{version}.{timestamp}.katana'
-    # The location of published Katana files
+        definition: '@asset_work_area/katana/snapshots/{Asset}_{Step}[_{name}]_{User}_v{version}.{timestamp}.katana'
+    asset_publish_area_katana:
+        definition: '@asset_publish_area/katana'
     katana_asset_publish:
-        definition: '@asset_root/publish/katana/{name}.v{version}.katana'
+        definition: '@asset_publish_area/katana/scenes/{Asset}_{Step}[_{name}]_v{version}.katana'
+
+    # Rendered images
+    katana_asset_render:
+        definition: '@asset_work_area/katana/render/v{version}/{name}/{Asset}_{name}_v{version}.{SEQ}.exr'
+    katana_asset_publish_render:
+        definition: '@asset_publish_area/katana/render/v{version}/{name}/{Asset}_{name}_v{version}.{SEQ}.exr'

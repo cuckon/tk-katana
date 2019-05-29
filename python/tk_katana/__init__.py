@@ -7,20 +7,20 @@ import sys
 import traceback
 
 import sgtk
+# sgtk.platform.qt imports deferred to fix engine import_module errors
 
 from Katana import Configuration
 from Katana import FarmAPI
 from Katana import Callbacks
-from Katana import QtGui, QtCore
 
 from .menu_generation import MenuGenerator
-from .panels import KatanaPanelWidget
 
 
 def __show_tank_message(title, msg):
     """
     Display a message in a dialog.
     """
+    from sgtk.platform.qt import QtGui
     QtGui.QMessageBox.information(None, title, msg)
 
 
@@ -40,6 +40,7 @@ def __create_tank_disabled_menu(details):
     """
     Creates a std "disabled" shotgun menu
     """
+    from sgtk.platform.qt import QtGui
     if Configuration.get("KATANA_UI_MODE"):
         sg_menu = MenuGenerator.get_or_create_root_menu("Shotgun")
         if sg_menu is not None:
@@ -56,6 +57,7 @@ def __create_tank_error_menu():
     Creates a std "error" sgtk menu and grabs the current context.
     Make sure that this is called from inside an except clause.
     """
+    from sgtk.platform.qt import QtGui
     (exc_type, exc_value, exc_traceback) = sys.exc_info()
     message = ""
     message += "Message: Shotgun encountered a problem starting the Engine.\n"
