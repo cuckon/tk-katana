@@ -110,6 +110,82 @@ class PyQt5Patcher(PySide2Patcher):
         QtGui.QPyTextObject = QPyTextObject
 
     @classmethod
+    def _patch_QHeaderView(cls, QtGui):
+        """
+        """
+        original_QHeaderView = QtGui.QHeaderView
+
+        class QHeaderView(original_QHeaderView):
+
+            def setResizeMode(self, *args, **kwargs):
+                return super(QHeaderView, self).setSectionResizeMode(*args, **kwargs)
+
+            def resizeMode(self, *args, **kwargs):
+                return super(QHeaderView, self).sectionResizeMode(*args, **kwargs)
+
+            def isClickable(self, *args, **kwargs):
+                return super(QHeaderView, self).sectionsClickable(*args, **kwargs)
+
+            def isMovable(self, *args, **kwargs):
+                return super(QHeaderView, self).sectionsMovable(*args, **kwargs)
+
+            def setClickable(self, *args, **kwargs):
+                return super(QHeaderView, self).setSectionsClickable(*args, **kwargs)
+            
+            def setMovable(self, *args, **kwargs):
+                return super(QHeaderView, self).setSectionsMovable(*args, **kwargs)
+        
+        QtGui.QHeaderView = QHeaderView
+
+    @classmethod
+    def _patch_QTreeView(cls, QtCore, QtGui):
+        """
+        """
+        original_QTreeView = QtGui.QTreeView
+
+        class QTreeView(original_QTreeView):
+
+            def __init__(self, *args, **kwargs):
+                super(QTreeView, self).__init__(*args, **kwargs)
+                header = QtGui.QHeaderView(QtCore.Qt.Horizontal, parent=self)
+                header.setSectionResizeMode(QtGui.QHeaderView.Stretch)
+                self.setHeader(header)
+        
+        QtGui.QTreeView = QTreeView
+
+    @classmethod
+    def _patch_QTreeWidget(cls, QtCore, QtGui):
+        """
+        """
+        original_QTreeWidget = QtGui.QTreeWidget
+
+        class QTreeWidget(original_QTreeWidget):
+
+            def __init__(self, *args, **kwargs):
+                super(QTreeWidget, self).__init__(*args, **kwargs)
+                header = QtGui.QHeaderView(QtCore.Qt.Horizontal, parent=self)
+                header.setSectionResizeMode(QtGui.QHeaderView.Stretch)
+                self.setHeader(header)
+        
+        QtGui.QTreeWidget = QTreeWidget
+
+    @classmethod
+    def _patch_QTreeWidgetItemIterator(cls, QtGui):
+        """
+        """
+        original_QTreeWidgetItemIterator = QtGui.QTreeWidgetItemIterator
+        class QTreeWidgetItemIterator(original_QTreeWidgetItemIterator):
+
+            def __iter__(self):
+                value = self.value()
+                while value:
+                    yield self
+                    self += 1
+                    value = self.value()
+
+        QtGui.QTreeWidgetItemIterator = QTreeWidgetItemIterator
+    
+    @classmethod
     def _patch_QtCore__version__(cls, QtCore):
         """PyQt does not have ``__version__``, get it from ``qVersion()``."""
         QtCore.__version__ = QtCore.qVersion()
@@ -130,4 +206,8 @@ class PyQt5Patcher(PySide2Patcher):
         cls._patch_QtCore__version__(qt_core_shim)
         cls._patch_QPyTextObject(qt_core_shim, qt_gui_shim)
         cls._patch_QAction(qt_gui_shim)
+        cls._patch_QHeaderView(qt_gui_shim)
+        cls._patch_QTreeView(qt_core_shim, qt_gui_shim)
+        cls._patch_QTreeWidget(qt_core_shim, qt_gui_shim)
+        cls._patch_QTreeWidgetItemIterator(qt_gui_shim)
         return qt_core_shim, qt_gui_shim

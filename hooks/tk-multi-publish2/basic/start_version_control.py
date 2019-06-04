@@ -22,8 +22,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
         # look for icon one level up from this hook's folder in "icons" folder
         return os.path.join(
             self.disk_location,
-            os.pardir,
-            "icons",
+            "icon",
             "version_up.png"
         )
 

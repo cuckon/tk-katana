@@ -5,6 +5,7 @@
 """
 A Katana engine for Shotgun Toolkit.
 """
+import logging
 import os
 import traceback
 
@@ -16,6 +17,8 @@ from Katana import Configuration
 from Katana import Callbacks
 import UI4.App.MainWindow
 
+
+katana_logger = logging.getLogger("tk-katana.engine")
 
 __all__ = ('KatanaEngine',)
 
@@ -291,3 +294,26 @@ class KatanaEngine(sgtk.platform.Engine):
                 return base
 
         return QtPyImporter().base
+
+    def _emit_log_message(self, handler, record):
+        """
+        Called by the engine to log messages in Katana.
+        All log messages from the toolkit logging namespace will be passed to this method.
+
+        :param handler: Log handler that this message was dispatched from.
+                        Its default format is "[levelname basename] message".
+        :type handler: :class:`~python.logging.LogHandler`
+        :param record: Standard python logging record.
+        :type record: :class:`~python.logging.LogRecord`
+        """
+        # Give a standard format to the message:
+        #     Shotgun <basename>: <message>
+        # where "basename" is the leaf part of the logging record name,
+        # for example "tk-multi-shotgunpanel" or "qt_importer".
+        if record.levelno < logging.INFO:
+            formatter = logging.Formatter("Debug: Shotgun %(basename)s: %(message)s")
+        else:
+            formatter = logging.Formatter("Shotgun %(basename)s: %(message)s")
+
+        msg = formatter.format(record)
+        katana_logger.log(record.levelno, msg)
