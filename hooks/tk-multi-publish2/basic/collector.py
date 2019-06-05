@@ -151,7 +151,7 @@ class KatanaSessionCollector(HookBaseClass):
 
         get_name = methodcaller("getName")
         for node in sorted(sg_look_file_nodes, key=get_name):
-            item = parent_item.create_item(
+            parent_item.create_item(
                 "katana.session.lookfile",
                 "Look File",
                 node.getName()
