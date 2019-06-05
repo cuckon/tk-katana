@@ -1,0 +1,13 @@
+# REPLACE any existing mappings with these
+
+################################################################################
+# A single, top-level setting is defined: "@frameworks". This setting can
+# be included and referenced wherever shared frameworks are required.
+
+frameworks:
+  # qtwidgets - collection of Toolkit related QT Widgets
+  tk-framework-qtwidgets_v2.x.x:
+    location:
+      type: git
+      path: git@github.com:wwfxuk/tk-framework-qtwidgets.git
+      version: v2.8.3+wwfx.1.1.0
