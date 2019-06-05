@@ -27,8 +27,18 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
 
     """
+    @property
+    def name(self):
+        """The general name for this plugin (:class:`str`)."""
+        return "KatanaSessionPublish"
 
-    # NOTE: The plugin icon and name are defined by the base file plugin.
+    @property
+    def icon(self):
+        """
+        The path to an icon on disk that is representative of this plugin
+        (:class:`str`).
+        """
+        return os.path.join(self.disk_location, "icon", "katana.png")
 
     @property
     def description(self):
@@ -174,12 +184,12 @@ class KatanaSessionPublishPlugin(HookBaseClass):
             # provide a save button. the session will need to be saved before
             # validation will succeed.
             self.logger.warn(
-                "The Natron session has not been saved.",
+                "The Katana session has not been saved.",
                 extra=_get_save_as_action()
             )
 
         self.logger.info(
-            "Natron '%s' plugin accepted the current Natron session." %
+            "Katana '%s' plugin accepted the current Katana session." %
             (self.name,)
         )
         return {
@@ -193,7 +203,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         boolean to indicate validity.
 
         :param settings: Dictionary of Settings. The keys are strings, matching
-            the keys returned in the settings property. The values are `Setting`
+            the keys returned in the settings property. The values ar e`Setting`
             instances.
         :param item: Item to process
         :returns: True if item is valid, False otherwise.
@@ -207,7 +217,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         if not path:
             # the session still requires saving. provide a save button.
             # validation fails.
-            error_msg = "The Natron session has not been saved."
+            error_msg = "The Katana session has not been saved."
             self.logger.error(
                 error_msg,
                 extra=_get_save_as_action()
@@ -233,7 +243,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
                     extra={
                         "action_button": {
                             "label": "Save File",
-                            "tooltip": "Save the current Natron session to a "
+                            "tooltip": "Save the current Katana session to a "
                                        "different file name",
                             # will launch wf2 if configured
                             "callback": _get_save_as_action()
@@ -315,7 +325,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
             _katana_find_additional_session_dependencies()
 
         # Unfortunately, it seems that the SSL certificate does not work
-        # with the Natron urlib2 library so we force it here
+        # with the Katana urlib2 library so we force it here
         ssl_cert_file = os.environ.get("SSL_CERT_FILE")
 
         try:

@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 import errno
 import os
 import sgtk
-import NodegraphAPI
+from Katana import KatanaFile, NodegraphAPI
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -62,10 +62,10 @@ class KatanaActions(HookBaseClass):
 
         action_instances = []
 
-        if "open_project" in actions:
-            action_instances.append( {"name": "open_project",
+        if "import_project" in actions:
+            action_instances.append( {"name": "import_project",
                                       "params": None,
-                                      "caption": "Open Project",
+                                      "caption": "Import Project",
                                       "description": "This will open the Katana project file."} )
 
         if "import_look_file" in actions:
@@ -74,14 +74,14 @@ class KatanaActions(HookBaseClass):
                                       "caption": "Import Look File",
                                       "description": "This will create an LookFileAssign node corresponding to this published Look File."} )
 
-        if "create_node_Alembic_In" in actions:
-            action_instances.append( {"name": "create_node_Alembic_In",
+        if "import_alembic" in actions:
+            action_instances.append( {"name": "import_alembic",
                                       "params": None,
                                       "caption": "Import Alembic",
                                       "description": "This will create an Alembic_In node corresponding to this cache."} )
 
-        if "create_node_ImageRead" in actions:
-            action_instances.append( {"name": "create_node_ImageRead",
+        if "import_image" in actions:
+            action_instances.append( {"name": "import_image",
                                       "params": None,
                                       "caption": "Import image",
                                       "description": "Creates an ImageRead node for the selected item."} )
@@ -136,26 +136,38 @@ class KatanaActions(HookBaseClass):
         # resolve path
         path = self.get_publish_path(sg_publish_data)
 
-        if name == "open_project":
-            self._open_project(path, sg_publish_data)
+        if name == "import_project":
+            self._import_project(path, sg_publish_data)
 
         if name == "import_look_file":
-            self._open_project(path, sg_publish_data)
+            node = self._create_node(
+                "LookFileAssign",
+                path, 
+                sg_publish_data,
+                path_parameter="args.lookfile.asset.value"
+            )
+            node.getParameter('args.lookfile.asset.enable').setValue(1.0, 0)
 
-        if name == "create_node_Alembic_In":
+        if name == "import_alembic":
             self._create_node("Alembic_In", path, sg_publish_data, path_parameter="abcAsset")
 
-        if name == "create_node_ImageRead":
+        if name == "import_image":
             self._create_node("ImageRead", path, sg_publish_data, path_parameter="file")
 
 
     ##############################################################################################################
     # helper methods which can be subclassed in custom hooks to fine tune the behaviour of things
 
-    def _open_project(self, path, sg_publish_data):
+    @staticmethod
+    def _import_project(path):
         """
+        Import a katana project into the current session.
+
+        :param path: The file path to import.
+        :type path: str
         """
-        return
+        root = NodegraphAPI.GetRootNode()
+        return KatanaFile.Import(path, floatNodes=True, parentNode=root)
 
     def _create_node(self, node_type, path, sg_publish_data, path_parameter="file"):
         """

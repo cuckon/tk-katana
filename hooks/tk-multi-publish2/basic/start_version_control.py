@@ -20,12 +20,7 @@ class KatanaStartVersionControlPlugin(HookBaseClass):
         """
 
         # look for icon one level up from this hook's folder in "icons" folder
-        return os.path.join(
-            self.disk_location,
-            os.pardir,
-            "icons",
-            "version_up.png"
-        )
+        return os.path.join(self.disk_location, "icon", "version_up.png")
 
     @property
     def name(self):

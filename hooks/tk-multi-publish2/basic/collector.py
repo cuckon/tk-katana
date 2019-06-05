@@ -8,8 +8,11 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+from operator import methodcaller
 import os
 import sgtk
+
+from Katana import FarmAPI, NodegraphAPI
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -71,8 +74,8 @@ class KatanaSessionCollector(HookBaseClass):
 
         """
         # create an item representing the current katana session
-        # item = self.collect_current_katana_session(settings, parent_item)
-        self.collect_current_katana_session(settings, parent_item)
+        item = self.collect_current_katana_session(settings, parent_item)
+        self.collect_look_files(item)
 
     def collect_current_katana_session(self, settings, parent_item):
         """
@@ -135,3 +138,21 @@ class KatanaSessionCollector(HookBaseClass):
         self.logger.info("Collected current Katana scene")
 
         return session_item
+
+    def collect_look_files(self, parent_item):
+        """
+        Collect all the SGLookFileBake nodes in the scene. 
+        Add to parent item.
+
+        :param parent_item: Parent Item instance
+        """
+        sg_look_file_nodes = NodegraphAPI.GetAllNodesByType("SGLookFileBake")
+
+        get_name = methodcaller("getName")
+        for node in sorted(sg_look_file_nodes, key=get_name):
+            parent_item.create_item(
+                "katana.session.lookfile",
+                "Look File",
+                node.getName()
+            )
+        
