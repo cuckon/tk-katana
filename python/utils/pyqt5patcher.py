@@ -112,6 +112,7 @@ class PyQt5Patcher(PySide2Patcher):
     @classmethod
     def _patch_QHeaderView(cls, QtGui):
         """
+        Back port old method calls on the QHeaderView object.
         """
         original_QHeaderView = QtGui.QHeaderView
 
@@ -140,6 +141,8 @@ class PyQt5Patcher(PySide2Patcher):
     @classmethod
     def _patch_QTreeView(cls, QtCore, QtGui):
         """
+        Use the patched `QHeaderView` as the header object otherwise it will use an
+        unpatched version, which we don't want.
         """
         original_QTreeView = QtGui.QTreeView
 
@@ -156,6 +159,8 @@ class PyQt5Patcher(PySide2Patcher):
     @classmethod
     def _patch_QTreeWidget(cls, QtCore, QtGui):
         """
+        Use the patched `QHeaderView` as the header object otherwise it will use an
+        unpatched version, which we don't want.
         """
         original_QTreeWidget = QtGui.QTreeWidget
 
@@ -172,6 +177,7 @@ class PyQt5Patcher(PySide2Patcher):
     @classmethod
     def _patch_QTreeWidgetItemIterator(cls, QtGui):
         """
+        Add the '__iter__' method to the `QTreeWidgetItemIterator`.
         """
         original_QTreeWidgetItemIterator = QtGui.QTreeWidgetItemIterator
         class QTreeWidgetItemIterator(original_QTreeWidgetItemIterator):

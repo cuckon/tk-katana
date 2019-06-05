@@ -141,6 +141,12 @@ class KatanaSessionCollector(HookBaseClass):
         return session_item
 
     def collect_look_files(self, parent_item):
+        """
+        Collect all the SGLookFileBake nodes in the scene. 
+        Add to parent item.
+
+        :param parent_item: Parent Item instance
+        """
         sg_look_file_nodes = NodegraphAPI.GetAllNodesByType("SGLookFileBake")
 
         get_name = methodcaller("getName")

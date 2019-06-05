@@ -49,7 +49,7 @@ class KatanaLauncher(SoftwareLauncher):
         """
         The minimum software version that is supported by the launcher.
         """
-        return "2.6v4"
+        return "3.1v1"
 
     def _get_resource_paths(self):
         """

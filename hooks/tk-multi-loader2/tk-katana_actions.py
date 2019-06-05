@@ -160,6 +160,7 @@ class KatanaActions(HookBaseClass):
 
     def _import_project(self, path, sg_publish_data):
         """
+        Import a katana project into the current session.
         """
         root = NodegraphAPI.GetRootNode()
         return KatanaFile.Import(path, floatNodes=True, parentNode=root)
