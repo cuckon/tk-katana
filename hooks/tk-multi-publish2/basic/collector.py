@@ -74,7 +74,6 @@ class KatanaSessionCollector(HookBaseClass):
 
         """
         # create an item representing the current katana session
-        # item = self.collect_current_katana_session(settings, parent_item)
         item = self.collect_current_katana_session(settings, parent_item)
         self.collect_look_files(item)
 

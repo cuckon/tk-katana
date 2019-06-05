@@ -33,7 +33,7 @@ def _get_resource_paths(context):
         app_descriptor = env.get_app_descriptor("tk-katana", app)
         path = app_descriptor.get_path()
         resource_path = os.path.join(path, "resources", "Katana")
-        if os.path.exists(resource_path):
+        if os.path.isdir(resource_path):
             paths.append(resource_path)
     return paths
 
@@ -46,10 +46,9 @@ def bootstrap(engine_name, context, app_path, app_args, extra_args):
 
     # pull the path to "{engine}/resources/Katana"
     engine_path = sgtk.platform.get_engine_path(engine_name, context.sgtk, context)
-    startup_path = os.path.join(engine_path, "resources", "Katana")
-    resource_paths = _get_resource_paths(context)
-        for path in resource_paths:
-            startup_path += ":{}".format(path)
+    startup_paths = [os.path.join(engine_path, "resources", "Katana")]
+    startup_paths.extend(_get_resource_paths(context))
+    startup_path = os.pathsep.join(startup_paths)
 
     # add to the katana startup env
     sgtk.util.append_path_to_env_var("KATANA_RESOURCES", startup_path)

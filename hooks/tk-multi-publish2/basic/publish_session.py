@@ -38,11 +38,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         The path to an icon on disk that is representative of this plugin
         (:class:`str`).
         """
-        return os.path.join(
-            self.disk_location,
-            "icon",
-            "katana.png"
-        )
+        return os.path.join(self.disk_location, "icon", "katana.png")
 
     @property
     def description(self):
@@ -207,7 +203,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         boolean to indicate validity.
 
         :param settings: Dictionary of Settings. The keys are strings, matching
-            the keys returned in the settings property. The values are `Setting`
+            the keys returned in the settings property. The values ar e`Setting`
             instances.
         :param item: Item to process
         :returns: True if item is valid, False otherwise.

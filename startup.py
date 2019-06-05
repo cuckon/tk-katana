@@ -71,7 +71,7 @@ class KatanaLauncher(SoftwareLauncher):
             app_descriptor = env.get_app_descriptor("tk-katana", app)
             path = app_descriptor.get_path()
             resource_path = os.path.join(path, "resources", "Katana")
-            if os.path.exists(resource_path):
+            if os.path.isdir(resource_path):
                 self.logger.debug("Found resource path for '{}': '{}'".format(app.upper(), resource_path))
                 paths.append(resource_path)
         return paths
@@ -90,7 +90,7 @@ class KatanaLauncher(SoftwareLauncher):
         required_env = {}
 
         # Run the engine's init.py file when Katana starts up
-        startup_path = os.path.join(self.disk_location, "resources", "Katana")
+        startup_paths = [os.path.join(self.disk_location, "resources", "Katana")]
 
         # Prepare the launch environment with variables required by the
         # classic bootstrap approach.
@@ -99,9 +99,8 @@ class KatanaLauncher(SoftwareLauncher):
         required_env["SGTK_ENGINE"] = self.engine_name
         required_env["SGTK_CONTEXT"] = sgtk.context.serialize(self.context)
         required_env["PYTHONPATH"] = os.environ["PYTHONPATH"]
-        resource_paths = self._get_resource_paths()
-        for path in resource_paths:
-            startup_path += ":{}".format(path)
+        startup_paths.extend(self._get_resource_paths())
+        startup_path = os.pathsep.join(startup_paths)
         required_env["KATANA_RESOURCES"] = startup_path
 
         if file_to_open:
