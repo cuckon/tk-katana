@@ -158,9 +158,13 @@ class KatanaActions(HookBaseClass):
     ##############################################################################################################
     # helper methods which can be subclassed in custom hooks to fine tune the behaviour of things
 
-    def _import_project(self, path, sg_publish_data):
+    @staticmethod
+    def _import_project(path):
         """
         Import a katana project into the current session.
+
+        :param path: The file path to import.
+        :type path: str
         """
         root = NodegraphAPI.GetRootNode()
         return KatanaFile.Import(path, floatNodes=True, parentNode=root)
