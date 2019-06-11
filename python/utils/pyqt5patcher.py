@@ -62,26 +62,32 @@ class PyQt5Patcher(PySide2Patcher):
 
     Originally developed for Katana 3.1 for use in ``tk-katana``:
 
+    .. code-block:: text
+
         Katana 3.1 (PyQt5)
                 |
                 V
               Qt.py
+              ^^^^^
                 |
                 | Converts PyQt5 for PySide2 compatibility
                 V
-            PySide2Patcher (parent class from sgtk.util)
+         PySide2Patcher (parent class from sgtk.util)
+         ^^^^^^^^^^^^^^
                 |
                 |  Converts PySide2 for PySide 1 compatibility
                 V
-            PyQt5Patcher (that's me!)
+           PyQt5Patcher (that's me!)
+           ^^^^^^^^^^^^
                 |
                 |  Converts any remaining PyQt5 for PySide 1 compatibility
                 V
-        KatanaEngine._define_qt_base
+           KatanaEngine._define_qt_base
+           ^^^^^^^^^^^^
                 |
                 |  Engine then exposes Qt bindings publicly through...
                 V
-            sgtk.platform.qt
+         sgtk.platform.qt
     """
 
     @classmethod
@@ -132,10 +138,10 @@ class PyQt5Patcher(PySide2Patcher):
 
             def setClickable(self, *args, **kwargs):
                 return super(QHeaderView, self).setSectionsClickable(*args, **kwargs)
-            
+
             def setMovable(self, *args, **kwargs):
                 return super(QHeaderView, self).setSectionsMovable(*args, **kwargs)
-        
+
         QtGui.QHeaderView = QHeaderView
 
     @classmethod
@@ -153,7 +159,7 @@ class PyQt5Patcher(PySide2Patcher):
                 header = QtGui.QHeaderView(QtCore.Qt.Horizontal, parent=self)
                 header.setSectionResizeMode(QtGui.QHeaderView.Stretch)
                 self.setHeader(header)
-        
+
         QtGui.QTreeView = QTreeView
 
     @classmethod
@@ -171,7 +177,7 @@ class PyQt5Patcher(PySide2Patcher):
                 header = QtGui.QHeaderView(QtCore.Qt.Horizontal, parent=self)
                 header.setSectionResizeMode(QtGui.QHeaderView.Stretch)
                 self.setHeader(header)
-        
+
         QtGui.QTreeWidget = QTreeWidget
 
     @classmethod
@@ -190,7 +196,7 @@ class PyQt5Patcher(PySide2Patcher):
                     value = self.value()
 
         QtGui.QTreeWidgetItemIterator = QTreeWidgetItemIterator
-    
+
     @classmethod
     def _patch_QtCore__version__(cls, QtCore):
         """PyQt does not have ``__version__``, get it from ``qVersion()``."""
