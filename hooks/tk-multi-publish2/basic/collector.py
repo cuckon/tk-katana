@@ -75,6 +75,7 @@ class KatanaSessionCollector(HookBaseClass):
         """
         # create an item representing the current katana session
         item = self.collect_current_katana_session(settings, parent_item)
+        self.collect_renders(item)
         self.collect_look_files(item)
 
     def collect_current_katana_session(self, settings, parent_item):
@@ -155,4 +156,25 @@ class KatanaSessionCollector(HookBaseClass):
                 "Look File",
                 node.getName()
             )
+
+    def collect_renders(self, parent_item):
+        """
+        Collect all the SGRenderOutputDefine nodes in the scene. 
+        Add to parent item.
+
+        :param parent_item: Parent Item instance
+        """
+        sg_nodes = NodegraphAPI.GetAllNodesByType("SGRenderOutputDefine")
+
+        get_name = methodcaller("getName")
+        for node in sorted(sg_nodes, key=get_name):
+            node_name = node.getName()
+            param = node.getParameter("args.renderSettings.outputs.outputName")
+            output = param.getValue(0)
+            item = parent_item.create_item(
+                "katana.session.render",
+                "Rendered Image",
+                "{}, {}".value(node_name, output)
+            )
+            item.properties["node"] = node_name
         

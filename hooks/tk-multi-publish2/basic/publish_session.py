@@ -38,7 +38,7 @@ class KatanaSessionPublishPlugin(HookBaseClass):
         The path to an icon on disk that is representative of this plugin
         (:class:`str`).
         """
-        return os.path.join(self.disk_location, "icon", "katana.png")
+        return os.path.join(self.disk_location, "icons", "katana.png")
 
     @property
     def description(self):
