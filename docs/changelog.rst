@@ -3,6 +3,11 @@ Change Log/History
 
 See also the `GitHub Releases page`_
 
+v0.1.0+wwfx.1.6.0 (26 Jun 2019)
+-------------------------------
+- Added render publishing
+- Moved icons to 'icons' folder
+
 v0.1.0+wwfx.1.5.0 (11 Jun 2019)
 -------------------------------
 - Moved documentation to GitHub Pages from GitHub Wiki

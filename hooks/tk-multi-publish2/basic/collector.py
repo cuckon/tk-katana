@@ -75,6 +75,7 @@ class KatanaSessionCollector(HookBaseClass):
         """
         # create an item representing the current katana session
         item = self.collect_current_katana_session(settings, parent_item)
+        self.collect_renders(item)
         self.collect_look_files(item)
 
     def collect_current_katana_session(self, settings, parent_item):
@@ -155,4 +156,46 @@ class KatanaSessionCollector(HookBaseClass):
                 "Look File",
                 node.getName()
             )
-        
+
+    @staticmethod
+    def _get_template(template_name):
+        """
+        Get the template object from the given name.
+
+        :param template_name: The name of the template to retrieve.
+        :returns: The template object.
+        """
+        engine = sgtk.platform.current_engine()
+        return engine.get_template_by_name(template_name)   
+
+    def collect_renders(self, parent_item):
+        """
+        Collect all the SGRenderOutputDefine nodes in the scene. 
+        Add to parent item.
+
+        :param parent_item: Parent Item instance
+        """
+        sg_nodes = NodegraphAPI.GetAllNodesByType("SGRenderOutputDefine")
+        get_name = methodcaller("getName")
+        for node in sorted(sg_nodes, key=get_name):
+            node_name = node.getName()
+            internal_node = node.getChildByIndex(0)
+            param = internal_node.getParameter("outputName")
+            output = param.getValue(0)
+            publish_name = "{}, {}".format(node_name, output)
+            item = parent_item.create_item(
+                "katana.session.render",
+                "Rendered Image",
+                publish_name
+            )
+            item.properties["node"] = node
+            item.properties["path"] = node.getParameter("sg_renderLocation").getValue(0)
+            item.properties["work_template"] = self._get_template(
+                node.getParameter("sg_work_template").getValue(0)
+            )
+            item.properties["publish_template"] = self._get_template(
+                node.getParameter("sg_publish_template").getValue(0)
+            )
+            item.properties["publish_name"] = publish_name
+            item.properties["publish_type"] = "Rendered Image"
+            item.properties["__collector"] = self
