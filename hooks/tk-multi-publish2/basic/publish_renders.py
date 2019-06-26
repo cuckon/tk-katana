@@ -9,7 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from collections import defaultdict
-import errno
+import glob
 import os
 import re
 import textwrap
@@ -17,7 +17,7 @@ import textwrap
 import sgtk
 from sgtk.platform.qt import QtGui
 
-from Katana import NodegraphAPI
+from Katana import NodegraphAPI, Nodes3DAPI
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -36,7 +36,7 @@ class RenderPublishWidgetItem(QtGui.QWidget):
         :type data: dict
         :type parent: QtGui.QWidget
         """
-        super(RenderPublishWidgetItem, self).__init__(parent=None)
+        super(RenderPublishWidgetItem, self).__init__(parent=parent)
         self.__name = name
         layout = QtGui.QHBoxLayout()
         self.setLayout(layout)
@@ -57,7 +57,7 @@ class RenderPublishWidgetItem(QtGui.QWidget):
         :type data: dict
         """
         work_paths = data.get("work_paths", [])
-        for index, path in enumerate(work_paths):
+        for path in work_paths:
             base_name = os.path.basename(path)
             combo.addItem(base_name, userData=path)
         index = combo.findText(os.path.basename(data.get("to_publish", "")))
@@ -94,7 +94,9 @@ class RenderPublishWidget(QtGui.QWidget):
         Initialize the widget.
 
         :param parent: The parent widget
-        :type: QtGio                                                                                            
+        :type paren: QtGui.QWidget
+        :param description_widget: The description widget.
+        :type description_widget: QtGui.QWidget                                                                                   
         """
         super(RenderPublishWidget, self).__init__(parent=parent)
         self.__contents = {}
@@ -110,7 +112,7 @@ class RenderPublishWidget(QtGui.QWidget):
 
     def clear(self):
         """
-        Clear the current itmtmSui
+        Clear the current layout.
         """
         for widget in self.__displayed:
             self.layout().removeWidget(widget)
@@ -162,7 +164,7 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         The path to an icon on disk that is representative of this plugin
         (:class:`str`).
         """
-        return os.path.join(self.disk_location, "icon", "image_sequence.png")
+        return os.path.join(self.disk_location, "icons", "image_sequence.png")
 
     @property
     def description(self):
@@ -294,6 +296,7 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         :returns: dictionary with boolean keys accepted, required and enabled
         """
         node = item.properties["node"]
+        node_name = node.getName()
         settings["node"].value = node.getName()
         path = item.properties["path"]
         work_template = item.properties["work_template"]
@@ -317,7 +320,7 @@ class KatanaRenderPublishPlugin(HookBaseClass):
                 "'{}': No generated work files".format(node_name)
             )
             return {"accepted": False, "visible": True, "enabled": True, "checked": False}
-
+        fields["SEQ"] = "####"
         publish_paths = self.sgtk.abstract_paths_from_template(publish_template, fields)
 
         work_paths_to_publish = sorted(work_paths, reverse=True)
@@ -329,13 +332,13 @@ class KatanaRenderPublishPlugin(HookBaseClass):
                 # cache result as this might be slow
                 if publish_path not in publish_fields:
                     publish_fields[publish_path] = publish_template.get_fields(publish_path)
-                publish_fields = publish_fields[publish_path]
-                if os.path.exists(publish_path) and publish_fields["version"] == work_fields["version"]:
+                this_publish_fields = publish_fields[publish_path]
+                if glob.glob(publish_path.replace("####", "*")) and this_publish_fields["version"] == work_fields["version"]:
                     self.logger.debug("'{}' already published".format(work_path))
                     # publish version exists
                     work_paths_to_publish.remove(work_path)
                     break
-
+        self.logger.debug("Work_paths_to_publish: {!r}".format(work_paths_to_publish))
         if not work_paths_to_publish:
             self.logger.debug(
                 "'{}': All versions published".format(node_name)
@@ -343,9 +346,19 @@ class KatanaRenderPublishPlugin(HookBaseClass):
             return {"accepted": False, "visible": True, "enabled": False, "checked": False}
 
         render_paths = self._get_all_render_node_paths()
-        if path not in self.__render_paths:
-            self.logger.debug(
-                "'{}' isn't connected to a render node".format(node_name)
+        if path not in render_paths:
+            self.logger.warn(
+                (
+                    "'{}': '{}' wasn't found in any render nodes. Sync render output ports, "
+                    "or connect the node to a render node."
+                ).format(node_name, path),
+                extra={
+                    "action_button": {
+                        "label": "Sync All Render Output Ports",
+                        "tooltip": "Sync All Render Output Ports",
+                        "callback": Nodes3DAPI.RenderNodeUtil.SyncAllOutputPorts
+                    }
+                }
             )
             return {"accepted": True, "visible": True, "enabled": False, "checked": False}
 
@@ -357,7 +370,7 @@ class KatanaRenderPublishPlugin(HookBaseClass):
 
         return {
             "accepted": True,
-            "checked": self.__render_paths[path]
+            "checked": render_paths[path]
         }
     
     @staticmethod
@@ -382,7 +395,6 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         :param item: Item to process
         :returns: True if item is valid, False otherwise.
         """
-        node_name = item.properties["node"].getName()
         item_settings = self._get_item_settings(settings)
         work_template = item.properties["work_template"]
         publish_template = item.properties["publish_template"]
@@ -390,7 +402,10 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         # Check the filepath is valid
         if not work_template.validate(path):
             raise sgtk.TankError("The filepath '{}' does not match the template '{}'".format(path, work_template.name))
-        # Check if file has already been copied to the publish location
+        # Check it exists on disk
+        glob_path = re.sub(r"\..+\.", ".*.", path)
+        if not glob.glob(glob_path):
+            raise sgtk.TankError("The filepath '{}' does not exist on disk".format(path))
         fields = work_template.validate_and_get_fields(path)
         publish_path = publish_template.apply_fields(fields)
         item.properties["publish_path"] = publish_path
