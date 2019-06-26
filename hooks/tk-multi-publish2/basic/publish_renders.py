@@ -94,7 +94,7 @@ class RenderPublishWidget(QtGui.QWidget):
         Initialize the widget.
 
         :param parent: The parent widget
-        :type paren: QtGui.QWidget
+        :type parent: QtGui.QWidget
         :param description_widget: The description widget.
         :type description_widget: QtGui.QWidget                                                                                   
         """
