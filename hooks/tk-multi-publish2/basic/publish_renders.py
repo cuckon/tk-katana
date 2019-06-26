@@ -11,6 +11,8 @@
 from collections import defaultdict
 import errno
 import os
+import re
+import textwrap
 
 import sgtk
 from sgtk.platform.qt import QtGui
@@ -149,13 +151,6 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
 
     """
-    def __init__(self, *args, *kwargs):
-        """
-        Initialize the class.
-        """
-        super(KatanaRenderPublishPlugin, self).__init__(*args, **kwargs)
-        self.__render_paths = self._get_all_render_node_paths()
-
     @property
     def name(self):
         """The general name for this plugin (:class:`str`)."""
@@ -176,13 +171,13 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         contain simple html for formatting.
         """
 
-        return """
+        return textwrap.dedent("""
         Publish the renders by picking the unpublished version
         from the drop-down.
 
         If you can't see the version you are expecting make sure it 
         hasn't already been published, or if it has been written out.
-        """
+        """)
 
     @property
     def settings(self):
@@ -259,17 +254,19 @@ class KatanaRenderPublishPlugin(HookBaseClass):
 
         :rtype: `dict`
         """
-        def false_factory():
-            return False
-        render_paths = defaultdict(false_factory)
-        render_nodes = NodegraphAPI.GetAllNodesByType("Render")
-        for node in render_nodes:
-            outputs = node.getParameter("outputs")
-            locations = [x.getValue(0) for x in outputs.getChild("locations").getChildren()]
-            enabled_flags = [x.getValue(0) for x in outputs.getChild("enabledFlags").getChildren()]
-            for path, enabled in zip(locations, enabled_flags):
-                render_paths[path] |= bool(enabled)  # At least one enabled to make it enabled
-        return dict(render_paths)
+        if not hasattr(self, "__render_paths"):
+            def false_factory():
+                return False
+            render_paths = defaultdict(false_factory)
+            render_nodes = NodegraphAPI.GetAllNodesByType("Render")
+            for node in render_nodes:
+                outputs = node.getParameter("outputs")
+                locations = [x.getValue(0) for x in outputs.getChild("locations").getChildren()]
+                enabled_flags = [x.getValue(0) for x in outputs.getChild("enabledFlags").getChildren()]
+                for path, enabled in zip(locations, enabled_flags):
+                    render_paths[path] |= bool(enabled)  # At least one enabled to make it enabled
+            self.__render_paths = dict(render_paths)
+        return self.__render_paths
 
     def accept(self, settings, item):
         """
@@ -296,16 +293,15 @@ class KatanaRenderPublishPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
-        node_name = item.properties["node"]
-        settings["node"].value = node_name
-        node = NodegraphAPI.GetNode(node_name)
-        path_param = node.getParameter("sg_saveTo")
-        path = path_param.getValue(0)
-        item.properties["path"] = path
-        work_param = node.getParameter("sg_work_template")
-        work_template_name = work_param.getValue(0)
-        work_template = self._get_template(work_template_name)
-        item.properties["work_template"] = work_template
+        node = item.properties["node"]
+        settings["node"].value = node.getName()
+        path = item.properties["path"]
+        work_template = item.properties["work_template"]
+        publish_template = item.properties["publish_template"]
+
+        if not work_template or not publish_template:
+            self.logger.debug("Templates do not exist. Is the context set propertly?")
+            return {"accepted": False, "visible": False, "enabled": False, "checked": False}
 
         fields = work_template.validate_and_get_fields(path)
         if not fields:
@@ -322,10 +318,6 @@ class KatanaRenderPublishPlugin(HookBaseClass):
             )
             return {"accepted": False, "visible": True, "enabled": True, "checked": False}
 
-        publish_param = node.getParameter("sg_publish_template")
-        publish_template_name = publish_param.getValue(0)
-        publish_template = self._get_template(publish_template_name)
-        item.properties["publish_template"] = publish_template
         publish_paths = self.sgtk.abstract_paths_from_template(publish_template, fields)
 
         work_paths_to_publish = sorted(work_paths, reverse=True)
@@ -350,6 +342,7 @@ class KatanaRenderPublishPlugin(HookBaseClass):
             )
             return {"accepted": False, "visible": True, "enabled": False, "checked": False}
 
+        render_paths = self._get_all_render_node_paths()
         if path not in self.__render_paths:
             self.logger.debug(
                 "'{}' isn't connected to a render node".format(node_name)
@@ -389,19 +382,11 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         :param item: Item to process
         :returns: True if item is valid, False otherwise.
         """
-        node_name = item.properties["node_name"]
+        node_name = item.properties["node"].getName()
         item_settings = self._get_item_settings(settings)
-        # Check the templates exist
         work_template = item.properties["work_template"]
-        if not work_template:
-            raise sgtk.TankError("'{}': Work template '{}' doesn't exist".format(node_name, work_template.name))
         publish_template = item.properties["publish_template"]
-        if not publish_template:
-            raise sgtk.TankError("'{}': Publish template '{}' doesn't exist".format(node_name, publish_template.name))
-        # Check the file exists still. It might have been removed from the filesystem after collection
         path = item_settings["to_publish"]
-        if not os.path.exists(path):
-            raise sgtk.TankError("The file '{}' no longer exists on disk. Has it been deleted/published?".format(path))
         # Check the filepath is valid
         if not work_template.validate(path):
             raise sgtk.TankError("The filepath '{}' does not match the template '{}'".format(path, work_template.name))
@@ -410,30 +395,33 @@ class KatanaRenderPublishPlugin(HookBaseClass):
         publish_path = publish_template.apply_fields(fields)
         item.properties["publish_path"] = publish_path
         item.properties["path"] = path
-        if os.path.exists(publish_path):
-            raise IOError(errno.EEXIST, "The file '{}' has already been copied to the publish location.".format(path))
+        image_seq = self._get_sequence_paths(item)
+        if image_seq:
+            item.properties["sequence_paths"] = image_seq
+        return super(KatanaRenderPublishPlugin, self).validate(settings, item)
 
-        return True
-
-    def publish(self, settings, item):
+    def _get_sequence_paths(self, item):
         """
-        Executes the publish logic for the given item and settings.
+        Get the individual paths to the image sequence
 
-        :param settings: Dictionary of Settings. The keys are strings, matching
-            the keys returned in the settings property. The values are `Setting`
-            instances.
         :param item: Item to process
+        :returns: `list` of file paths
         """
-        publish_path = item.properties["publish_path"]
-        publish_dir = os.path.dirname(publish_path)
+        collector = item.properties["__collector"]
+        path = item.properties.path
+        folder = os.path.dirname(path)
+        publisher = collector.parent
 
-        self.logger.debug("Making directory: '{}'".format(publish_dir))
-        engine = sgtk.platform.current_engine()
-        engine.ensure_folder_exists(publish_dir)
-
-        item.properties["publish_type"] = "Rendered Image"
-
-        super(KatanaRenderPublishPlugin, self).publish(settings, item)
+        # get the pad string from this path, incase it has been changed.
+        frame_pattern_match = re.search(r".*[._-](.+)\.[^.]+$", path, re.IGNORECASE)
+        pad_str = None
+        if frame_pattern_match:
+            pad_str = frame_pattern_match.group(1)
+        
+        img_sequences = publisher.util.get_frame_sequences(folder, ["exr"], pad_str)
+        for image_seq_path, img_seq_files in img_sequences:
+            if image_seq_path == path:
+                return img_seq_files
 
     def create_settings_widget(self, parent):
         """

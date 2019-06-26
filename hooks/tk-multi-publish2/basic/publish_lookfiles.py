@@ -10,6 +10,7 @@
 
 import errno
 import os
+import textwrap
 
 import sgtk
 from sgtk.platform.qt import QtGui
@@ -168,13 +169,13 @@ class KatanaLookFilePublishPlugin(HookBaseClass):
         contain simple html for formatting.
         """
 
-        return """
+        return textwrap.dedent("""
         Publish the Look File by picking the unpublished version
         from the drop-down.
 
         If you can't see the version you are expecting make sure it 
         hasn't already been published, or if it has been written out.
-        """
+        """)
 
     @property
     def settings(self):
