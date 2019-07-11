@@ -18,9 +18,11 @@ install:
   - pip install -r ./docs/requirements.txt
 
 script:
-  # Generate docs
+  # Generate docs (__init__.py and module rename hack to generate hooks docs)
+  - find ./hooks -type d -exec touch {}/__init__.py \;
   - sphinx-apidoc -o ./docs/api --separate --no-toc ./
-  - sphinx-apidoc -o ./docs/api/hooks --separate --tocfile index ./hooks
+  - "sed -i '/automodule:: / s/-/_/g' docs/api/*"
+  - for I in $(find hooks/ -name '*.py'); do mkdir -p $(dirname "./docs/api/${I//-/_}") && cp -v "${I}" "./docs/api/${I//-/_}"; done
   - sphinx-build ./docs ./docs/_build
 
 deploy:
@@ -34,4 +36,4 @@ deploy:
   on:
     # only do this when on the master branch
     # Make sure this matches conf.py html_context["github_version"]
-    branch: master
+    branch: sgutils-icon-256

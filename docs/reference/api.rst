@@ -18,4 +18,4 @@ information about their methods and attributes here.
    ../api/engine
    ../api/python
    ../api/startup
-   ../api/hooks/index
+   ../api/hooks

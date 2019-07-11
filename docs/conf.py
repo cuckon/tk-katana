@@ -16,7 +16,11 @@ import datetime
 import pkg_resources
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))  # tk-katana repository root
+
+_this_file = os.path.abspath(__file__)
+_this_dir = os.path.dirname(__file__)
+sys.path.insert(0, os.path.dirname(_this_dir))  # tk-katana repository root
+sys.path.insert(0, os.path.join(_this_dir, 'api'))  # For docs-friendly hooks
 
 # -- Project information -----------------------------------------------------
 
