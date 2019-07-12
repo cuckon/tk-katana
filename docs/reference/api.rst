@@ -13,9 +13,5 @@ information about their methods and attributes here.
 
 .. toctree::
    :titlesonly:
-   :maxdepth: 4
 
-   ../api/engine
-   ../api/python
-   ../api/startup
-   ../api/hooks
+   ../api/index
