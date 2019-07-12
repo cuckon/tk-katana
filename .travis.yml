@@ -3,27 +3,14 @@ language: python
 python:
     - "2.7"
 
-before_install:
-  # required dependency for sphinx
-  - sudo apt-get install -y pandoc
-
-install:
-  #
-  # install pyside for Qt.py - from https://stackoverflow.com/questions/24489588
-  - sudo apt-get install -y libqt4-dev
-  - pip install PySide --no-index --find-links https://parkin.github.io/python-wheelhouse/;
-  - python ~/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/pyside_postinstall.py -install
-  #
-  # Documentation dependencies
-  - pip install -r ./docs/requirements.txt
+services:
+  - docker
 
 script:
-  # Generate docs (__init__.py and module rename hack to generate hooks docs)
-  - find ./hooks -type d -exec touch {}/__init__.py \;
-  - sphinx-apidoc -o ./docs/api --separate --no-toc ./
-  - "sed -i '/automodule:: / s/-/_/g' docs/api/*"
-  - for I in $(find hooks/ -name '*.py'); do mkdir -p $(dirname "./docs/api/${I//-/_}") && cp -v "${I}" "./docs/api/${I//-/_}"; done
-  - sphinx-build ./docs ./docs/_build
+  - docker run --rm
+      -v $(pwd):/repo
+      -v $(pwd)/docs/_build:/output
+      $(docker build --quiet --rm docs/docker)
 
 deploy:
   # When committing to master, auto-deploy to github-pages
@@ -36,4 +23,4 @@ deploy:
   on:
     # only do this when on the master branch
     # Make sure this matches conf.py html_context["github_version"]
-    branch: sgutils-icon-256
+    branch: hooks-docs

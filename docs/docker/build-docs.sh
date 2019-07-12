@@ -1,15 +1,27 @@
 #!/bin/bash
 
+#
+# usage: build-docs.sh [OUTPUT_DIR]
+#
+# Create sphinx documentations when run from repository root.
+#
+# By default, the docs will be output to docs/_build relative to the
+# repository's root folder. Pass in a custom folder
+
 set -eu -o pipefail
 
-find * -name '*.py' ! -path 'docs/*' -printf "/Repository/%h\n" | xargs mkdir -vp
-find /Repository/* -type d -exec touch {}/__init__.py \;
-find * -name '*.py' ! -path 'docs/*' -exec cp -fv {} /Repository/{} \;
-cp -rv docs /Repository
+PYTHON_ONLY_DIR=$(mktemp -d)
+OUTPUT_DIR="${1:-docs/_build}"
 
-cd /Repository
+# Copy only .py files, ensure leading folders have a __init__.py
+find * -name '*.py' ! -path 'docs/*' -printf "${PYTHON_ONLY_DIR}/%h\n" | xargs mkdir -vp
+find ${PYTHON_ONLY_DIR}/* -type d -exec touch {}/__init__.py \;
+find * -name '*.py' ! -path 'docs/*' -exec cp -fv {} ${PYTHON_ONLY_DIR}/{} \;
+cp -rv docs ${PYTHON_ONLY_DIR}
+
+cd ${PYTHON_ONLY_DIR}
 mkdir -vp docs/${API_RELATIVE_DIR}
-sphinx-apidoc -o docs/${API_RELATIVE_DIR} --separate --tocfile index .
+sphinx-apidoc -o docs/${API_RELATIVE_DIR} --separate --no-toc .
 
 # -- Generate API docs first with dash so it matches existing folders/files --
 # Replace - with _ so sphinx build can import modules
@@ -27,6 +39,7 @@ done
 
 
 # Clean, generate output and set permissions to match original owner
-rm -rf /output/*
-sphinx-build docs /output
-chown -R $(stat -c '%u' /output):$(stat -c '%g' /output) /output/*
+rm -rf ${OUTPUT_DIR}/*
+mkdir -vp ${OUTPUT_DIR}
+sphinx-build docs ${OUTPUT_DIR}
+chown -R $(stat -c '%u' ${OUTPUT_DIR}):$(stat -c '%g' ${OUTPUT_DIR}) ${OUTPUT_DIR}/*

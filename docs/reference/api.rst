@@ -14,4 +14,8 @@ information about their methods and attributes here.
 .. toctree::
    :titlesonly:
 
-   ../api/index
+   ../api/engine
+   ../api/hooks
+   ../api/python
+   ../api/resources
+   ../api/startup
