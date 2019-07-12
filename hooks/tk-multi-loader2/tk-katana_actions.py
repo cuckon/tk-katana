@@ -20,41 +20,55 @@ HookBaseClass = sgtk.get_hook_baseclass()
 class KatanaActions(HookBaseClass):
 
     def generate_actions(self, sg_publish_data, actions, ui_area):
-        """
-        Returns a list of action instances for a particular publish.
-        This method is called each time a user clicks a publish somewhere in the UI.
-        The data returned from this hook will be used to populate the actions menu for a publish.
+        """Get a list of action instances for a particular publish.
 
-        The mapping between Publish types and actions are kept in a different place
-        (in the configuration) so at the point when this hook is called, the loader app
-        has already established *which* actions are appropriate for this object.
+        This method is called each time a user clicks a publish somewhere
+        in the UI. The data returned from this hook will be used to populate
+        the actions menu for a publish.
 
-        The hook should return at least one action for each item passed in via the
-        actions parameter.
+        The mapping between Publish types and actions are kept in a different
+        place (in the configuration) so at the point when this hook is called,
+        the loader app has already established *which* actions are appropriate
+        for this object.
 
-        This method needs to return detailed data for those actions, in the form of a list
-        of dictionaries, each with name, params, caption and description keys.
+        The hook should return at least one action for each item passed in via
+        the ``actions`` parameter.
 
-        Because you are operating on a particular publish, you may tailor the output
-        (caption, tooltip etc) to contain custom information suitable for this publish.
+        This method needs to return detailed data for those actions, in the
+        form of a list of dictionaries, each with name, params, caption
+        and description keys.
 
-        The ui_area parameter is a string and indicates where the publish is to be shown.
+        Because you are operating on a particular publish, you may tailor the
+        output (caption, tooltip etc) to contain custom information suitable
+        for this publish.
+
+        The ``ui_area`` parameter is a string and indicates where the publish
+        is to be shown:
+
         - If it will be shown in the main browsing area, "main" is passed.
         - If it will be shown in the details area, "details" is passed.
         - If it will be shown in the history area, "history" is passed.
 
-        Please note that it is perfectly possible to create more than one action "instance" for
-        an action! You can for example do scene introspection - if the action passed in
-        is "character_attachment" you may for example scan the scene, figure out all the nodes
-        where this object can be attached and return a list of action instances:
-        "attach to left hand", "attach to right hand" etc. In this case, when more than
-        one object is returned for an action, use the params key to pass additional
-        data into the run_action hook.
+        Please note that it is perfectly possible to create more than one
+        action "instance" for an action! You can for example do scene
+        introspection - if the action passed in is "character_attachment"
+        you may for example scan the scene, figure out all the nodes where
+        this object can be attached and return a list of action instances:
+        "attach to left hand", "attach to right hand" etc.
+        In this case, when more than one object is returned for an action,
+        use the params key to pass additional data into the run_action hook.
 
-        :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
-        :param actions: List of action strings which have been defined in the app configuration.
+        :param sg_publish_data: Shotgun data dictionary with all the standard
+                                publish fields.
+        :type sg_publish_data: dict[str]
+        :param actions: Action strings which have been defined in the
+                        app configuration.
+        :type actions: list[str]
         :param ui_area: String denoting the UI Area (see above).
-        :returns List of dictionaries, each with keys name, params, caption and description
+        :type ui_area: str
+        :returns: List of dictionaries, each with keys name, params,
+                  caption and description.
+        :rtype: list[dict[str]]
         """
         app = self.parent
         app.log_debug("Generate actions called for UI element %s. "
@@ -95,23 +109,24 @@ class KatanaActions(HookBaseClass):
         The default implementation dispatches each item from ``actions`` to
         the ``execute_action`` method.
 
-        The ``actions`` is a list of dictionaries holding all the actions to execute.
-        Each entry will have the following values:
+        The ``actions`` is a list of dictionaries holding all the actions to
+        execute. Each entry will have the following values:
 
-            name: Name of the action to execute
-            sg_publish_data: Publish information coming from Shotgun
-            params: Parameters passed down from the generate_actions hook.
-
-        .. note::
-            This is the default entry point for the hook. It reuses the ``execute_action``
-            method for backward compatibility with hooks written for the previous
-            version of the loader.
+            - ``name``: Name of the action to execute
+            - ``sg_publish_data``: Publish information coming from Shotgun
+            - ``params``: Parameters passed from the ``generate_actions`` hook
 
         .. note::
-            The hook will stop applying the actions on the selection if an error
-            is raised midway through.
+            This is the default entry point for the hook. It reuses the
+            ``execute_action`` method for backward compatibility with hooks
+            written for the previous version of the loader.
 
-        :param list actions: Action dictionaries.
+        .. note::
+            The hook will stop applying the actions on the selection if an
+            error is raised midway through.
+
+        :param actions: Action dictionaries.
+        :type actions: list[dict]
         """
         for single_action in actions:
             name = single_action["name"]
@@ -120,40 +135,49 @@ class KatanaActions(HookBaseClass):
             self.execute_action(name, params, sg_publish_data)
 
     def execute_action(self, name, params, sg_publish_data):
-        """
-        Execute a given action. The data sent to this be method will
-        represent one of the actions enumerated by the generate_actions method.
+        """Execute a given action.
 
-        :param name: Action name string representing one of the items returned by generate_actions.
-        :param params: Params data, as specified by generate_actions.
-        :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
-        :returns: No return value expected.
-        """
-        app = self.parent
-        app.log_debug("Execute action called for action %s. "
-                      "Parameters: %s. Publish Data: %s" % (name, params, sg_publish_data))
+        The data sent to this be method will represent one of the actions
+        enumerated by the ``generate_actions`` method.
 
+        :param name: Action name string representing one of the items
+                     returned by ``generate_actions``.
+        :type name: str
+        :param params: Params data, as specified by ``generate_actions``.
+        :param sg_publish_data: Shotgun data dictionary with all the standard
+                                publish fields.
+        :type sg_publish_data: dict[str]
+        """
         # resolve path
         path = self.get_publish_path(sg_publish_data)
 
         if name == "import_project":
-            self._import_project(path, sg_publish_data)
+            self._import_project(path)
 
         if name == "import_look_file":
             node = self._create_node(
                 "LookFileAssign",
-                path, 
+                path,
                 sg_publish_data,
                 path_parameter="args.lookfile.asset.value"
             )
             node.getParameter('args.lookfile.asset.enable').setValue(1.0, 0)
 
         if name == "import_alembic":
-            self._create_node("Alembic_In", path, sg_publish_data, path_parameter="abcAsset")
+            self._create_node(
+                "Alembic_In",
+                path,
+                sg_publish_data,
+                path_parameter="abcAsset",
+            )
 
         if name == "import_image":
-            self._create_node("ImageRead", path, sg_publish_data, path_parameter="file")
-
+            self._create_node(
+                "ImageRead",
+                path,
+                sg_publish_data,
+                path_parameter="file",
+            )
 
     ##############################################################################################################
     # helper methods which can be subclassed in custom hooks to fine tune the behaviour of things

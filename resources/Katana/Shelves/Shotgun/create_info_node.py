@@ -1,3 +1,6 @@
+"""SCRATCH PAD for making a node exposing key/value of current context idea."""
+
+from Katana import NodegraphAPI
 import sgtk
 
 try:
@@ -27,4 +30,4 @@ sgg = root.createChildGroup('Shotgun')
 sgg.setName('Context')
 cstr = sgg.createChildString('Department Folder', '')
 cstr.setHintString(repr({'readOnly': True}))
-cstr.setValue(shotgun.find_one(context.step['type'], [['id', 'is', context.step['id']]], fields=['sg_folder_name'] )['sg_folder_name'], 0)1
+cstr.setValue(shotgun.find_one(context.step['type'], [['id', 'is', context.step['id']]], fields=['sg_folder_name'] )['sg_folder_name'], 0)
