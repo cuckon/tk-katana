@@ -8,6 +8,7 @@
 # By default, the docs will be output to docs/_build relative to the
 # repository's root folder. Pass in a custom folder
 #
+pip install sphinx-rtd-theme
 
 set -eu +f -o pipefail
 shopt -s dotglob
@@ -54,11 +55,6 @@ cp -rv "${DOCS_DIR}" "${PYTHON_ONLY_DIR}"
 
 # -- Generate API docs first with dash so it matches existing folders/files --
 cd "${PYTHON_ONLY_DIR}"
-mkdir -p "${API_RST_DIR}"
-sphinx-apidoc -o "${API_RST_DIR}" --separate --no-toc .
-
-# Replace - with _ so sphinx build can import modules
-sed -i '/automodule:: / s/-/_/g' "${API_RST_DIR}"/*.rst
 
 # Rename folder first before renaming .py files
 for DASH_FOLDER in $(find -type d -name '*-*')

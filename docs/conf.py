@@ -20,7 +20,6 @@ import sys
 _this_file = os.path.abspath(__file__)
 _this_dir = os.path.dirname(__file__)
 sys.path.insert(0, os.path.dirname(_this_dir))  # tk-katana repository root
-sys.path.insert(0, os.path.join(_this_dir, 'api'))  # For docs-friendly hooks
 
 # -- Project information -----------------------------------------------------
 
@@ -70,9 +69,13 @@ needs_sphinx = '1.8'
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.githubpages',
 ]
+
+autodoc_default_options = {'members': True}
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
