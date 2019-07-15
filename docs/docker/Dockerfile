@@ -1,7 +1,7 @@
 FROM centos:7
 
 #
-# From repository root, run:
+# From REPOSITORY ROOT, run:
 #
 #   (Run once FIRST) Create "local/tk-katana-docs" image to build docs with:
 #
@@ -9,27 +9,54 @@ FROM centos:7
 #
 #   (Run when you update docs) Build docs into "docs/_build", deletes existing:
 #
-#       docker run --rm \
-#           -v $(pwd):/repo \
-#           -v $(pwd)/docs/_build:/output \
+#       docker run --rm -v $(pwd):/repo local/tk-katana-docs
+#
+#   By default, the settings/outputs are as (relative to REPOSITORY root):
+#   - HTML output folder: docs/_build
+#   - Folder with Sphinx conf.py: docs
+#       - Sub-folder to generate API .rst using sphinx-apidoc: api
+#
+# Advanced:
+#
+#   Setting custom docs, API (generated .rst) and HTML output directory
+#   RELATIVE to repository root:
+#
+#       docker run --rm -v $(pwd):/repo \
+#           -e DOCS_DIR=docs/sphinx \
+#           -e API_RELATIVE_DIR=apidoc \
+#           local/tk-katana-docs \
+#           .github/html
+#
+#   Run image interactively as new container (enter bash shell):
+#
+#       docker run --rm -v $(pwd):/repo \
+#           -it \
+#           --entrypoint bash \
 #           local/tk-katana-docs
 #
 
 WORKDIR /usr/local/bin/
 COPY build-docs.sh .
 
-RUN chmod a+x build-docs.sh \
-    && yum install -y pyqt4 \
+# Install in PARALLEL [using]:
+# - PyQt4 [yum]
+# - tk-core python libs (also sets build-docs.sh as executable)
+# - pip [official get-pip.py] THEN sphinx, including ReadTheDocs theme [pip]
+RUN yum install -y pyqt4 \
     & curl -L https://bootstrap.pypa.io/get-pip.py | python - \
     && pip install sphinx-rtd-theme \
     & curl -LO 'https://raw.githubusercontent.com/wwfxuk/tk-doc-generator/v1.0.0%2Bwwfx.0.4.1/scripts/get-tk-core-packages.sh' \
-    && source get-tk-core-packages.sh /usr/local/python \
+    && chmod -v a+x * \
+    && get-tk-core-packages.sh /usr/lib64/python2.7/site-packages \
     & wait
-
-ENV PYTHONPATH=${PYTHONPATH}:/usr/local/python
-ENV API_RELATIVE_DIR=api
 
 WORKDIR /repo
 VOLUME /repo
 
-CMD build-docs.sh
+# Docs folder with sphinx conf.py: docs (relative to /repo)
+# Folder to generate API RST files into: api (relative to $DOCS_DIR)
+ENV DOCS_DIR=docs
+ENV API_RELATIVE_DIR=api
+
+ENTRYPOINT build-docs.sh
+CMD docs/_build
