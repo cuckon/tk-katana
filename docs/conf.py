@@ -171,9 +171,9 @@ html_static_path = ['_static']
 # You may only specify the root package of the
 # dependencies themselves and omit the sub-modules:
 autodoc_mock_imports = [
-    "sgtk", "tank",
-    "Katana", "UI4",
-    "Qt",
+    # "sgtk", "tank",               # Shotgun imports
+    "Katana", "AssetAPI", "UI4",  # Katana imports
+    # "Qt",                         # Qt imports
 ]
 
 # -- Options for todo extension ----------------------------------------------
