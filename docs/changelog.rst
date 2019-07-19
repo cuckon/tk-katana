@@ -3,6 +3,13 @@ Change Log/History
 
 See also the `GitHub Releases page`_
 
+v0.1.0+wwfx.1.7.0 (11 Jul 2019)
+-------------------------------
+- Added ``tk-framework-shotgunutils`` v5.x.x
+- Switched to standard 256x256 icon
+- Moved ``QtPyImporter`` into ``utils``
+- Minimal working support for older Katana using PyQt4
+
 v0.1.0+wwfx.1.6.0 (26 Jun 2019)
 -------------------------------
 - Added render publishing

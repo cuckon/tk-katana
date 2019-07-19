@@ -1,31 +1,32 @@
 # Add this Katana settings section to somewhere in the file
 
-# katana
+# Katana
 settings.tk-multi-loader2.katana:
   actions_hook: '{engine}/tk-multi-loader2/tk-katana_actions.py'
   action_mappings:
-    Alembic Cache: [create_node_Alembic_In]
-    Image: [create_node_ImageRead]
-    Katana Scene: [open_project]
+    Alembic Cache: [import_alembic]
+    Image: [import_image]
+    Photoshop Image: [import_image]
+    Rendered Image: [import_image]
+    Texture: [import_image]
     Katana Look File: [import_look_file]
-    Rendered Image: [create_node_ImageRead]
-    Texture: [create_node_ImageRead]
+    Katana File: [import_project]
   entities:
-  - caption: Assets
-    entity_type: Asset
-    filters:
-    - [project, is, "{context.project}"]
-    hierarchy: [sg_asset_type, code]
-  - caption: Shots
-    entity_type: Shot
-    filters:
-    - [project, is, "{context.project}"]
-    hierarchy: [sg_sequence, code]
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, "{context.user}"]
-    - [project, is, "{context.project}"]
-    hierarchy: [entity, content]
-  publish_filters: [["sg_status_list", "is_not", null]]
+    - caption: Assets
+      entity_type: Asset
+      filters:
+      - [project, is, '{context.project}']
+      hierarchy: [sg_asset_type, code]
+    - caption: Shots
+      entity_type: Shot
+      filters:
+      - [project, is, '{context.project}']
+      hierarchy: [sg_sequence, code]
+    - caption: My Tasks
+      entity_type: Task
+      filters:
+      - [task_assignees, is, '{context.user}']
+      - [project, is, '{context.project}']
+      hierarchy: [entity, content]
   location: "@apps.tk-multi-loader2.location"
+

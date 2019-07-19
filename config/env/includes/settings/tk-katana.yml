@@ -9,8 +9,10 @@ includes:
 - ./tk-multi-publish2.yml
 # - ./tk-multi-screeningroom.yml
 # - ./tk-multi-shotgunpanel.yml
-- ./tk-multi-snapshot.yml
+# - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
+- ./tk-katana-lookfilebakenode.yml
+- ./tk-katana-renderoutputdefinenode.yml
 
 ################################################################################
 
@@ -35,16 +37,19 @@ settings.tk-katana.asset_step:
     # tk-multi-breakdown:
     #   location: "@apps.tk-multi-breakdown.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.katana"
-    # tk-multi-publish2: "@settings.tk-multi-publish2.katana.asset_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.katana.asset_step"
     # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     # tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.katana"
     # tk-multi-snapshot: "@settings.tk-multi-snapshot.katana.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.katana.asset_step"
+    tk-katana-lookfilebakenode: "@settings.tk-katana-lookfilebakenode.asset"
+    tk-katana-renderoutputdefinenode: "@settings.tk-katana-renderoutputdefinenode.asset"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   # - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  # - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-loader2, name: Load}
+  - {app_instance: tk-multi-publish2, name: Publish...}
   location: '@engines.tk-katana.location'
 
 # project
@@ -55,9 +60,10 @@ settings.tk-katana.project:
     # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     # tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.katana"
+    tk-katana-lookfilebakenode: "@settings.tk-katana-lookfilebakenode.shot"
+    tk-katana-renderoutputdefinenode: "@settings.tk-katana-renderoutputdefinenode.shot"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
   location: "@engines.tk-katana.location"
 
 # sequence
@@ -80,8 +86,6 @@ settings.tk-katana.shot:
       location: "@apps.tk-multi-about.location"
     # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     # tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
-    tk-multi-setframerange:
-      location: "@apps.tk-multi-setframerange.location"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.katana"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
@@ -95,18 +99,20 @@ settings.tk-katana.shot_step:
       location: "@apps.tk-multi-about.location"
     # tk-multi-breakdown:
     #   location: "@apps.tk-multi-breakdown.location"
-    tk-multi-setframerange:
-      location: "@apps.tk-multi-setframerange.location"
+    # tk-multi-setframerange:
+    #   location: "@apps.tk-multi-setframerange.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.katana"
-    # tk-multi-publish2: "@settings.tk-multi-publish2.katana.shot_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.katana.shot_step"
     # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     # tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.katana"
     # tk-multi-snapshot: "@settings.tk-multi-snapshot.katana.shot_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.katana.shot_step"
+    tk-katana-lookfilebakenode: "@settings.tk-katana-lookfilebakenode.shot"
+    tk-katana-renderoutputdefinenode: "@settings.tk-katana-renderoutputdefinenode.shot"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   # - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  # - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-loader2, name: Load}
+  - {app_instance: tk-multi-publish2, name: Publish...}
   location: '@engines.tk-katana.location'
-

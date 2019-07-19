@@ -26,6 +26,10 @@ paths:
         definition: '@shot_publish_area/katana'
     katana_shot_publish:
         definition: '@shot_publish_area/katana/scenes/{Shot}_{Step}[_{name}]_v{version}.katana'
+    katana_shot_look_file:
+        definition: '@shot_work_area/katana/scenes/klf/{name}/v{version}/{Shot}_{Step}_{name}_v{version}.klf'
+    katana_shot_publish_look_file:
+        definition: '@shot_publish_area/katana/scenes/klf/{name}/v{version}/{Shot}_{Step}_{name}_v{version}.klf'
 
     # Rendered images
     katana_shot_render:
@@ -47,6 +51,11 @@ paths:
         definition: '@asset_publish_area/katana'
     katana_asset_publish:
         definition: '@asset_publish_area/katana/scenes/{Asset}_{Step}[_{name}]_v{version}.katana'
+    katana_asset_look_file:
+        definition: '@asset_work_area/katana/scenes/klf/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.klf'
+    katana_asset_publish_look_file:
+        definition: '@asset_publish_area/katana/scenes/klf/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.klf'
+
 
     # Rendered images
     katana_asset_render:

@@ -14,6 +14,12 @@ end_of_line = lf
 indent_style = tab
 end_of_line = crlf
 
+[*.yml]
+indent_size = 2
+
+[templates.yml]
+indent_size = 4
+
 [LICENSE]
 insert_final_newline = false
 

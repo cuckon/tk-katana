@@ -1,0 +1,14 @@
+includes:
+- ../app_locations.yml
+
+# shot
+settings.tk-katana-renderoutputdefinenode.shot:
+  look_file_work_template: katana_shot_render
+  look_file_publish_template: katana_shot_publish_render
+  location: "@apps.tk-katana-renderoutputdefinenode.location"
+
+# asset
+settings.tk-katana-renderoutputdefinenode.asset:
+  look_file_work_template: katana_asset_render
+  look_file_publish_template: katana_asset_publish_render
+  location: "@apps.tk-katana-renderoutputdefinenode.location"

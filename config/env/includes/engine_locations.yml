@@ -4,4 +4,4 @@
 engines.tk-katana.location:
   type: git
   path: git@github.com:wwfxuk/tk-katana.git
-  version: v0.1.0+wwfx.1.3.1
+  version: v0.1.0+wwfx.1.7.0

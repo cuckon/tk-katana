@@ -109,15 +109,6 @@ class KatanaLauncher(SoftwareLauncher):
 
         return LaunchInformation(exec_path, args, required_env)
 
-    def _icon_from_engine(self):
-        """
-        Use the default engine icon as katana does not supply
-        an icon in their software directory structure.
-
-        :returns: Full path to application icon as a string or None.
-        """
-        return os.path.join(self.disk_location, "icon_64.png")
-
     def scan_software(self):
         """
         Scan the filesystem for katana executables.
@@ -171,7 +162,7 @@ class KatanaLauncher(SoftwareLauncher):
                         executable_version,
                         "Katana",
                         executable_path,
-                        self._icon_from_engine()
+                        self.icon_256
                     )
                 )
 
