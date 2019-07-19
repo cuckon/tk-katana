@@ -3,6 +3,12 @@ Change Log/History
 
 See also the `GitHub Releases page`_
 
+v0.1.0+wwfx.1.8.0 (19 Jul 2019)
+-------------------------------
+- Removed unused hooks
+- Using docker to build docs
+- Fixed broken docstrings
+
 v0.1.0+wwfx.1.7.0 (11 Jul 2019)
 -------------------------------
 - Added ``tk-framework-shotgunutils`` v5.x.x

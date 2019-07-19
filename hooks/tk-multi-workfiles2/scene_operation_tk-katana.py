@@ -11,44 +11,46 @@ HookBaseClass = sgtk.get_hook_baseclass()
 
 
 class SceneOperation(HookBaseClass):
-    """
-    Hook called to perform an operation with the
-    current scene
-    """
+    """ Hook called to perform an operation with the current scene."""
 
     def execute(self, operation, file_path, context, parent_action, file_version, read_only, **kwargs):
-        """
-        Main hook entry point
+        """Main hook entry point.
 
-        :param operation:       String
-                                Scene operation to perform
+        Args:
+            operation (str):
+                Scene operation to perform
 
-        :param file_path:       String
-                                File path to use if the operation
-                                requires it (e.g. open)
+            file_path (str):
+                File path to use if the operation
+                requires it (e.g. open)
 
-        :param context:         Context
-                                The context the file operation is being
-                                performed in.
+            context (sgtk.Context):
+                The context the file operation is being
+                performed in.
 
-        :param parent_action:   This is the action that this scene operation is
-                                being executed for.  This can be one of:
-                                - open_file
-                                - new_file
-                                - save_file_as
-                                - version_up
+            parent_action (str):
+                Action that this scene operation is being executed for.
+                This can be one of:
 
-        :param file_version:    The version/revision of the file to be opened.  If this is 'None'
-                                then the latest version should be opened.
+                - "open_file"
+                - "new_file"
+                - "save_file_as"
+                - "version_up"
 
-        :param read_only:       Specifies if the file should be opened read-only or not
+            file_version:
+                The version/revision of the file to be opened.
+                If this is ``None`` then the latest version should be opened.
 
-        :returns:               Depends on operation:
-                                'current_path' - Return the current scene
-                                                 file path as a String
-                                'reset'        - True if scene was reset to an empty
-                                                 state, otherwise False
-                                all others     - None
+            read_only (bool):
+                Specifies if the file should be opened read-only or not
+
+        Returns:
+            object: Depending on ``operation``:
+
+                - 'current_path': Current scene file path as a ``str``
+                - 'reset': ``True`` if scene was reset to an empty state,
+                   otherwise ``False``
+                - all others: ``None``
         """
         if operation == "current_path":
             # return the current scene path

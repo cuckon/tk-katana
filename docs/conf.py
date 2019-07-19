@@ -16,7 +16,68 @@ import datetime
 import pkg_resources
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))  # tk-katana repository root
+import yaml  # Requires: pip install PyYAML
+
+__this_file = os.path.abspath(__file__)
+__this_dir = os.path.dirname(__this_file)
+__root = os.path.dirname(__this_dir)  # tk-katana repository root
+sys.path.insert(0, __root)
+
+
+def get_docs_deploy_branch(default='master'):
+    """Get the branch which the docs are deployed from.
+
+    Keyword Args:
+        default (str): Defaults branch name to use if non found.
+
+    Returns:
+        str: Branch name which the docs are deployed from.
+    """
+    branch = None
+
+    with open(os.path.join(__root, '.travis.yml'), 'r') as travis_yml:
+        travis_data = yaml.load(travis_yml)
+        for deployment in travis_data.get('deploy', []):
+            if deployment.get('provider') == 'pages':
+                # "on" key maps to "True" for some reason lol
+                branch = deployment.get(True, {}).get('branch')
+                break
+
+    return branch or default
+
+
+def get_version_from_changelog():
+    """Fetch version string from headings in changelog.rst.
+
+    Parse every word in the first 20 lines of changelog.rst for valid versions.
+
+    Returns:
+        str: Version number.
+    """
+    result = None
+
+    with open('changelog.rst', 'r') as changelog:
+        max_count = 20
+        for line_count, line in enumerate(changelog, start=1):
+            for word in line.split():
+                try:
+                    pkg_resources.packaging.version.Version(word)
+                    result = word
+                    break   # Break out of: for word in line.split()
+                except pkg_resources.packaging.version.InvalidVersion:
+                    pass
+
+            if result is not None or line_count == max_count:
+                break  # Break out of: for line in changelog
+
+        if result is None:
+            raise ValueError(
+                'No valid version number/word found in the first {0} '
+                'lines of changelog.rst'.format(max_count)
+            )
+
+    return result  # Return here in case the file does not get closed properly.
+
 
 # -- Project information -----------------------------------------------------
 
@@ -26,33 +87,8 @@ project = u'tk-katana'
 author = u'The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay'
 copyright = u'{0.year}, {1}'.format(datetime.date.today(), author)
 
-# The short X.Y version
-version = None
-# The full version, including alpha/beta/rc tags
-release = None
-
-# Parse every word in the first 20 lines of changelog.rst for valid versions
-with open('changelog.rst', 'r') as changelog:
-    max_count = 20
-    for line_count, line in enumerate(changelog, start=1):
-        for word in line.split():
-            try:
-                pkg_resources.packaging.version.Version(word)
-                version = word
-                release = word
-                break   # Break out of: for word in line.split()
-            except pkg_resources.packaging.version.InvalidVersion:
-                pass
-
-        if (version and release) or line_count == max_count:
-            break  # Break out of: for line in changelog
-
-    if not(version and release):
-        raise ValueError(
-            'No valid version number/word found in the first {0} '
-            'lines of changelog.rst'.format(max_count)
-        )
-
+# The short X.Y version and the full version, including alpha/beta/rc tags
+version = release = get_version_from_changelog()
 
 # -- General configuration ---------------------------------------------------
 
@@ -122,7 +158,7 @@ html_context = {
     'display_github': True,
     'github_user': 'wwfxuk',
     'github_repo': 'tk-katana',
-    'github_version': 'master',  # Double check .travis.yml pages deploy branch
+    'github_version': get_docs_deploy_branch(),
     'conf_py_path': '/docs/',
 }
 
@@ -167,9 +203,9 @@ html_static_path = ['_static']
 # You may only specify the root package of the
 # dependencies themselves and omit the sub-modules:
 autodoc_mock_imports = [
-    "sgtk", "tank",
-    "Katana", "UI4",
-    "Qt",
+    "sgtk", "tank",               # Shotgun imports
+    "Katana", "AssetAPI", "UI4",  # Katana imports
+    "Qt",                         # Qt imports
 ]
 
 # -- Options for todo extension ----------------------------------------------

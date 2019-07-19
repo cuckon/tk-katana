@@ -21,4 +21,4 @@ deploy:
   on:
     # only do this when on the master branch
     # Make sure this matches conf.py html_context["github_version"]
-    branch: master
+    branch: hooks-docs
