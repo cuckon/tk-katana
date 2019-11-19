@@ -198,6 +198,7 @@ html_static_path = ['_static']
 
 # -- Extension configuration -------------------------------------------------
 
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html
 intersphinx_mapping = {
     'python': ('https://docs.python.org/2', None),
     'katana': ('https://learn.foundry.com/katana/dev-guide', None),

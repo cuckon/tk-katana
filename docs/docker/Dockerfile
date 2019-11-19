@@ -46,8 +46,7 @@ RUN yum install -y pyqt4 \
     & curl -L https://bootstrap.pypa.io/get-pip.py | python - \
     && pip install PyYAML sphinx-rtd-theme \
     & curl -LO 'https://raw.githubusercontent.com/wwfxuk/tk-doc-generator/v1.0.0%2Bwwfx.0.4.1/scripts/get-tk-core-packages.sh' \
-    && chmod -v a+x * \
-    && get-tk-core-packages.sh /usr/lib64/python2.7/site-packages \
+    | bash -s /usr/lib64/python2.7/site-packages \
     & wait
 
 WORKDIR /repo
