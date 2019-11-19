@@ -103,6 +103,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.githubpages',
 ]
 
@@ -197,15 +198,21 @@ html_static_path = ['_static']
 
 # -- Extension configuration -------------------------------------------------
 
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/2', None),
+    'katana': ('https://learn.foundry.com/katana/dev-guide', None),
+    'tk-core': ('https://developer.shotgunsoftware.com/tk-core', None),
+}
+
 # This value contains a list of modules to be mocked up.
 # This is useful when some external dependencies are
 # not met at build time and break the building process.
 # You may only specify the root package of the
 # dependencies themselves and omit the sub-modules:
 autodoc_mock_imports = [
-    "sgtk", "tank",               # Shotgun imports
-    "Katana", "AssetAPI", "UI4",  # Katana imports
-    "Qt",                         # Qt imports
+    "tank",     # Shotgun imports ("sgtk" from intersphinx)
+    "Katana",   # Katana imports ("AssetAPI", "UI4" from intersphinx)
+    "Qt",       # Qt imports
 ]
 
 # -- Options for todo extension ----------------------------------------------
