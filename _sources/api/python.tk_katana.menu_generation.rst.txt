@@ -1,0 +1,7 @@
+python.tk\_katana.menu\_generation module
+=========================================
+
+.. automodule:: python.tk_katana.menu_generation
+    :members:
+    :undoc-members:
+    :show-inheritance:

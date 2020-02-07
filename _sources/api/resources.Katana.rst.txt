@@ -1,0 +1,19 @@
+resources.Katana package
+========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    resources.Katana.AssetPlugins
+    resources.Katana.Shelves
+    resources.Katana.Startup
+
+Module contents
+---------------
+
+.. automodule:: resources.Katana
+    :members:
+    :undoc-members:
+    :show-inheritance:

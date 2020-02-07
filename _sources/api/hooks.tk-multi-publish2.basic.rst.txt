@@ -1,0 +1,20 @@
+hooks.tk\-multi\-publish2.basic package
+=======================================
+
+Submodules
+----------
+
+.. toctree::
+
+   hooks.tk-multi-publish2.basic.publish_lookfiles
+   hooks.tk-multi-publish2.basic.publish_renders
+   hooks.tk-multi-publish2.basic.publish_session
+   hooks.tk-multi-publish2.basic.start_version_control
+
+Module contents
+---------------
+
+.. automodule:: hooks.tk_multi_publish2.basic
+    :members:
+    :undoc-members:
+    :show-inheritance:

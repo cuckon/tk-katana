@@ -1,0 +1,17 @@
+hooks.tk\-multi\-workfiles2 package
+===================================
+
+Submodules
+----------
+
+.. toctree::
+
+   hooks.tk-multi-workfiles2.scene_operation_tk-katana
+
+Module contents
+---------------
+
+.. automodule:: hooks.tk_multi_workfiles2
+    :members:
+    :undoc-members:
+    :show-inheritance:

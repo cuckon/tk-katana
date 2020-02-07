@@ -1,0 +1,7 @@
+python.tk\_katana.panels module
+===============================
+
+.. automodule:: python.tk_katana.panels
+    :members:
+    :undoc-members:
+    :show-inheritance:

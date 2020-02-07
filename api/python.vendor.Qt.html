@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>python.vendor.Qt module &mdash; tk-katana v0.1.0+wwfx.1.8.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon_64_bw.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="resources package" href="resources.html" />
+    <link rel="prev" title="python.vendor package" href="python.vendor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tk-katana
+          
+
+          
+            
+            <img src="../_static/icon_64_bw.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0+wwfx.1.8.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log/History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/custom_shield_icons.html">Make custom shields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/generating_documentations.html">Generating documentations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference/api.html">APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="engine.html">engine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">hooks package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="python.html">python package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="python.startup.html">python.startup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python.tk_katana.html">python.tk_katana package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python.utils.html">python.utils package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="python.vendor.html">python.vendor package</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">python.vendor.Qt module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html">startup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tk-katana</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../reference/api.html">APIs</a> &raquo;</li>
+        
+          <li><a href="python.html">python package</a> &raquo;</li>
+        
+          <li><a href="python.vendor.html">python.vendor package</a> &raquo;</li>
+        
+      <li>python.vendor.Qt module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/wwfxuk/tk-katana/blob/master/docs/api/python.vendor.Qt.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-python.vendor.Qt">
+<span id="python-vendor-qt-module"></span><h1>python.vendor.Qt module<a class="headerlink" href="#module-python.vendor.Qt" title="Permalink to this headline">¶</a></h1>
+<p>Minimal Python 2 &amp; 3 shim around all Qt bindings</p>
+<dl class="docutils">
+<dt>DOCUMENTATION</dt>
+<dd><p class="first">Qt.py was born in the film and visual effects industry to address
+the growing need for the development of software capable of running
+with more than one flavour of the Qt bindings for Python - PySide,
+PySide2, PyQt4 and PyQt5.</p>
+<ol class="arabic simple">
+<li>Build for one, run with all</li>
+<li>Explicit is better than implicit</li>
+<li>Support co-existence</li>
+</ol>
+<dl class="docutils">
+<dt>Default resolution order:</dt>
+<dd><ul class="first last simple">
+<li>PySide2</li>
+<li>PyQt5</li>
+<li>PySide</li>
+<li>PyQt4</li>
+</ul>
+</dd>
+<dt>Usage:</dt>
+<dd>&gt;&gt; import sys
+&gt;&gt; from Qt import QtWidgets
+&gt;&gt; app = QtWidgets.QApplication(sys.argv)
+&gt;&gt; button = QtWidgets.QPushButton(“Hello World”)
+&gt;&gt; button.show()
+&gt;&gt; app.exec_()</dd>
+</dl>
+<p>All members of PySide2 are mapped from other bindings, should they exist.
+If no equivalent member exist, it is excluded from Qt.py and inaccessible.
+The idea is to highlight members that exist across all supported binding,
+and guarantee that code that runs on one binding runs on all others.</p>
+<p class="last">For more details, visit <a class="reference external" href="https://github.com/mottosso/Qt.py">https://github.com/mottosso/Qt.py</a></p>
+</dd>
+</dl>
+<p>LICENSE</p>
+<blockquote>
+<div>See end of file for license (MIT, BSD) information.</div></blockquote>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="resources.html" class="btn btn-neutral float-right" title="resources package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="python.vendor.html" class="btn btn-neutral float-left" title="python.vendor package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

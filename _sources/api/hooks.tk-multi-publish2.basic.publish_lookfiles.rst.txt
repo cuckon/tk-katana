@@ -1,0 +1,7 @@
+hooks.tk\-multi\-publish2.basic.publish\_lookfiles module
+=========================================================
+
+.. automodule:: hooks.tk_multi_publish2.basic.publish_lookfiles
+    :members:
+    :undoc-members:
+    :show-inheritance:

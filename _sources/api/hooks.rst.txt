@@ -1,0 +1,19 @@
+hooks package
+=============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    hooks.tk-multi-loader2
+    hooks.tk-multi-publish2
+    hooks.tk-multi-workfiles2
+
+Module contents
+---------------
+
+.. automodule:: hooks
+    :members:
+    :undoc-members:
+    :show-inheritance:

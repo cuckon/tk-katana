@@ -1,0 +1,17 @@
+hooks.tk\-multi\-loader2 package
+================================
+
+Submodules
+----------
+
+.. toctree::
+
+   hooks.tk-multi-loader2.tk-katana_actions
+
+Module contents
+---------------
+
+.. automodule:: hooks.tk_multi_loader2
+    :members:
+    :undoc-members:
+    :show-inheritance:

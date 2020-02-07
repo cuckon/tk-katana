@@ -1,0 +1,17 @@
+resources package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    resources.Katana
+
+Module contents
+---------------
+
+.. automodule:: resources
+    :members:
+    :undoc-members:
+    :show-inheritance:

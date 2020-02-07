@@ -1,0 +1,17 @@
+resources.Katana.AssetPlugins package
+=====================================
+
+Submodules
+----------
+
+.. toctree::
+
+   resources.Katana.AssetPlugins.ShotgunAssetPlugin
+
+Module contents
+---------------
+
+.. automodule:: resources.Katana.AssetPlugins
+    :members:
+    :undoc-members:
+    :show-inheritance:

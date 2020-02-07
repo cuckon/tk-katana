@@ -1,0 +1,7 @@
+resources.Katana.Shelves.Shotgun.create\_info\_node module
+==========================================================
+
+.. automodule:: resources.Katana.Shelves.Shotgun.create_info_node
+    :members:
+    :undoc-members:
+    :show-inheritance:

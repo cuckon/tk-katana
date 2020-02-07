@@ -1,0 +1,17 @@
+python.startup package
+======================
+
+Submodules
+----------
+
+.. toctree::
+
+   python.startup.bootstrap
+
+Module contents
+---------------
+
+.. automodule:: python.startup
+    :members:
+    :undoc-members:
+    :show-inheritance:

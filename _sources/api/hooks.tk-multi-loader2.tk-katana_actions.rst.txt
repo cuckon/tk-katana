@@ -1,0 +1,7 @@
+hooks.tk\-multi\-loader2.tk\-katana\_actions module
+===================================================
+
+.. automodule:: hooks.tk_multi_loader2.tk_katana_actions
+    :members:
+    :undoc-members:
+    :show-inheritance:

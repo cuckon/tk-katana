@@ -1,0 +1,7 @@
+hooks.tk\-multi\-workfiles2.scene\_operation\_tk\-katana module
+===============================================================
+
+.. automodule:: hooks.tk_multi_workfiles2.scene_operation_tk_katana
+    :members:
+    :undoc-members:
+    :show-inheritance:

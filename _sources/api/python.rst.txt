@@ -1,0 +1,20 @@
+python package
+==============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    python.startup
+    python.tk_katana
+    python.utils
+    python.vendor
+
+Module contents
+---------------
+
+.. automodule:: python
+    :members:
+    :undoc-members:
+    :show-inheritance:

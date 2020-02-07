@@ -1,0 +1,17 @@
+hooks.tk\-multi\-publish2 package
+=================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    hooks.tk-multi-publish2.basic
+
+Module contents
+---------------
+
+.. automodule:: hooks.tk_multi_publish2
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,7 @@
+resources.Katana.Startup.init module
+====================================
+
+.. automodule:: resources.Katana.Startup.init
+    :members:
+    :undoc-members:
+    :show-inheritance:

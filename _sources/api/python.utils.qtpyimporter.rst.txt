@@ -1,0 +1,7 @@
+python.utils.qtpyimporter module
+================================
+
+.. automodule:: python.utils.qtpyimporter
+    :members:
+    :undoc-members:
+    :show-inheritance:

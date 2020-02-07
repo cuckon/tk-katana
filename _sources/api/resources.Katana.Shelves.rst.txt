@@ -1,0 +1,17 @@
+resources.Katana.Shelves package
+================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    resources.Katana.Shelves.Shotgun
+
+Module contents
+---------------
+
+.. automodule:: resources.Katana.Shelves
+    :members:
+    :undoc-members:
+    :show-inheritance:

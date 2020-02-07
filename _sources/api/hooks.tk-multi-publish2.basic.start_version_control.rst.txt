@@ -1,0 +1,7 @@
+hooks.tk\-multi\-publish2.basic.start\_version\_control module
+==============================================================
+
+.. automodule:: hooks.tk_multi_publish2.basic.start_version_control
+    :members:
+    :undoc-members:
+    :show-inheritance:

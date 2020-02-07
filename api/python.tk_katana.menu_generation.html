@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>python.tk_katana.menu_generation module &mdash; tk-katana v0.1.0+wwfx.1.8.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon_64_bw.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="python.tk_katana.panels module" href="python.tk_katana.panels.html" />
+    <link rel="prev" title="python.tk_katana package" href="python.tk_katana.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tk-katana
+          
+
+          
+            
+            <img src="../_static/icon_64_bw.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0+wwfx.1.8.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log/History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/custom_shield_icons.html">Make custom shields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/generating_documentations.html">Generating documentations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference/api.html">APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="engine.html">engine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">hooks package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="python.html">python package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="python.startup.html">python.startup package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="python.tk_katana.html">python.tk_katana package</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">python.tk_katana.menu_generation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python.tk_katana.panels.html">python.tk_katana.panels module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="python.utils.html">python.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python.vendor.html">python.vendor package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html">startup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tk-katana</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../reference/api.html">APIs</a> &raquo;</li>
+        
+          <li><a href="python.html">python package</a> &raquo;</li>
+        
+          <li><a href="python.tk_katana.html">python.tk_katana package</a> &raquo;</li>
+        
+      <li>python.tk_katana.menu_generation module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/wwfxuk/tk-katana/blob/master/docs/api/python.tk_katana.menu_generation.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-python.tk_katana.menu_generation">
+<span id="python-tk-katana-menu-generation-module"></span><h1>python.tk_katana.menu_generation module<a class="headerlink" href="#module-python.tk_katana.menu_generation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="python.tk_katana.menu_generation.AppCommand">
+<em class="property">class </em><code class="descname">AppCommand</code><span class="sig-paren">(</span><em>engine</em>, <em>name</em>, <em>command_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wraps around a single command that you get from engine.commands</p>
+<dl class="method">
+<dt id="python.tk_katana.menu_generation.AppCommand.add_command_to_menu">
+<code class="descname">add_command_to_menu</code><span class="sig-paren">(</span><em>menu</em><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.add_command_to_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new QAction representing this AppCommand to a given QMenu.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.app">
+<code class="descname">app</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.app" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command’s parent app.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.app_instance_name">
+<code class="descname">app_instance_name</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.app_instance_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The instance name of the parent app.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.app_name">
+<code class="descname">app_name</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.app_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the parent app.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.callback">
+<code class="descname">callback</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>The callback function associated with the command.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.engine">
+<code class="descname">engine</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The currently-running engine.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.favourite">
+<code class="descname">favourite</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.favourite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the command is a favourite.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python.tk_katana.menu_generation.AppCommand.get_documentation_url_str">
+<code class="descname">get_documentation_url_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.get_documentation_url_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the documentation URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.name">
+<code class="descname">name</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the command.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.properties">
+<code class="descname">properties</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command’s properties dictionary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.AppCommand.type">
+<code class="descname">type</code><a class="headerlink" href="#python.tk_katana.menu_generation.AppCommand.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command’s type as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="python.tk_katana.menu_generation.MenuGenerator">
+<em class="property">class </em><code class="descname">MenuGenerator</code><span class="sig-paren">(</span><em>engine</em>, <em>menu_name</em><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Katana specific menu generator.</p>
+<dl class="method">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.destroy_menu">
+<code class="descname">destroy_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.destroy_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroys the Shotgun menu.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.engine">
+<code class="descname">engine</code><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The currently-running engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.get_all_app_commands">
+<code class="descname">get_all_app_commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.get_all_app_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.get_katana_main_bar">
+<em class="property">classmethod </em><code class="descname">get_katana_main_bar</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.get_katana_main_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Katana GUI’s main menu bar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>RuntimeError</strong> – Cannot get Katana GUI’s main menu bar.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Katana GUI’s main menu bar.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">UI4.App.MainMenu.MainMenu</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.menu_name">
+<code class="descname">menu_name</code><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.menu_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the menu to be generated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python.tk_katana.menu_generation.MenuGenerator.setup_root_menu">
+<code class="descname">setup_root_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#python.tk_katana.menu_generation.MenuGenerator.setup_root_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to find an existing menu of the specified title.</p>
+<p>If it can’t be found, it creates one.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="python.tk_katana.panels.html" class="btn btn-neutral float-right" title="python.tk_katana.panels module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="python.tk_katana.html" class="btn btn-neutral float-left" title="python.tk_katana package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

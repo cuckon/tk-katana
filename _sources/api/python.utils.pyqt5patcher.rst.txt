@@ -1,0 +1,7 @@
+python.utils.pyqt5patcher module
+================================
+
+.. automodule:: python.utils.pyqt5patcher
+    :members:
+    :undoc-members:
+    :show-inheritance:

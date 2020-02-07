@@ -1,0 +1,17 @@
+resources.Katana.Startup package
+================================
+
+Submodules
+----------
+
+.. toctree::
+
+   resources.Katana.Startup.init
+
+Module contents
+---------------
+
+.. automodule:: resources.Katana.Startup
+    :members:
+    :undoc-members:
+    :show-inheritance:

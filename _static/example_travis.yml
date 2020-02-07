@@ -1,0 +1,24 @@
+language: python
+
+python:
+    - "2.7"
+
+services:
+  - docker
+
+script:
+  - docker run --rm -v $(pwd):/repo $(docker build --quiet --rm docs/docker)
+
+
+deploy:
+  # When committing to master, auto-deploy to github-pages
+  # This will copy the contents of the _build folder to gh-pages branch and push
+- provider: pages
+  local-dir: ./docs/_build
+  target-branch: gh-pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    # only do this when on the master branch
+    # Make sure this matches conf.py html_context["github_version"]
+    branch: master

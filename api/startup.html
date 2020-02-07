@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>startup module &mdash; tk-katana v0.1.0+wwfx.1.8.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon_64_bw.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="resources.Katana.Startup.init module" href="resources.Katana.Startup.init.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tk-katana
+          
+
+          
+            
+            <img src="../_static/icon_64_bw.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0+wwfx.1.8.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log/History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/custom_shield_icons.html">Make custom shields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/generating_documentations.html">Generating documentations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference/api.html">APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="engine.html">engine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">hooks package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">python package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">startup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tk-katana</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../reference/api.html">APIs</a> &raquo;</li>
+        
+      <li>startup module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/wwfxuk/tk-katana/blob/master/docs/api/startup.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-startup">
+<span id="startup-module"></span><h1>startup module<a class="headerlink" href="#module-startup" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="startup.KatanaLauncher">
+<em class="property">class </em><code class="descname">KatanaLauncher</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#startup.KatanaLauncher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sphinx.ext.autodoc.importer._MockObject</span></code></p>
+<p>Handles launching Katana executables. Automatically starts up
+a tk-katana engine with the current context in the new session
+of Katana.</p>
+<dl class="attribute">
+<dt id="startup.KatanaLauncher.COMPONENT_REGEX_LOOKUP">
+<code class="descname">COMPONENT_REGEX_LOOKUP</code><em class="property"> = {'version': '\\d+\\.\\d+v\\d+'}</em><a class="headerlink" href="#startup.KatanaLauncher.COMPONENT_REGEX_LOOKUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="startup.KatanaLauncher.EXECUTABLE_TEMPLATES">
+<code class="descname">EXECUTABLE_TEMPLATES</code><em class="property"> = {'linux2': ['/opt/foundry/katana-program/katana'], 'win32': ['C:/Program Files/Katana{version}/bin/katanaBin.exe']}</em><a class="headerlink" href="#startup.KatanaLauncher.EXECUTABLE_TEMPLATES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="startup.KatanaLauncher.minimum_supported_version">
+<code class="descname">minimum_supported_version</code><a class="headerlink" href="#startup.KatanaLauncher.minimum_supported_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum software version that is supported by the launcher.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="startup.KatanaLauncher.prepare_launch">
+<code class="descname">prepare_launch</code><span class="sig-paren">(</span><em>exec_path</em>, <em>args</em>, <em>file_to_open=None</em><span class="sig-paren">)</span><a class="headerlink" href="#startup.KatanaLauncher.prepare_launch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares an environment to launch Katana in that will automatically
+load Toolkit and the tk-katana engine when Katana starts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exec_path</strong> (<em>str</em>) – Path to Katana executable to launch.</li>
+<li><strong>args</strong> (<em>str</em>) – Command line arguments as strings.</li>
+<li><strong>file_to_open</strong> (<em>str</em>) – (optional) Full path name of a file to open on
+launch.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">LaunchInformation</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="startup.KatanaLauncher.scan_software">
+<code class="descname">scan_software</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#startup.KatanaLauncher.scan_software" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan the filesystem for katana executables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">SoftwareVersion</span></code> objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="resources.Katana.Startup.init.html" class="btn btn-neutral float-left" title="resources.Katana.Startup.init module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

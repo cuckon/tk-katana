@@ -1,0 +1,7 @@
+resources.Katana.AssetPlugins.ShotgunAssetPlugin module
+=======================================================
+
+.. automodule:: resources.Katana.AssetPlugins.ShotgunAssetPlugin
+    :members:
+    :undoc-members:
+    :show-inheritance:

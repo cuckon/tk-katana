@@ -1,0 +1,7 @@
+python.vendor.Qt module
+=======================
+
+.. automodule:: python.vendor.Qt
+    :members:
+    :undoc-members:
+    :show-inheritance:

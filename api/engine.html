@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>engine module &mdash; tk-katana v0.1.0+wwfx.1.8.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon_64_bw.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hooks package" href="hooks.html" />
+    <link rel="prev" title="APIs" href="../reference/api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tk-katana
+          
+
+          
+            
+            <img src="../_static/icon_64_bw.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0+wwfx.1.8.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log/History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/custom_shield_icons.html">Make custom shields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/generating_documentations.html">Generating documentations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference/api.html">APIs</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">engine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">hooks package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">python package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html">startup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tk-katana</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../reference/api.html">APIs</a> &raquo;</li>
+        
+      <li>engine module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/wwfxuk/tk-katana/blob/master/docs/api/engine.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-engine">
+<span id="engine-module"></span><h1>engine module<a class="headerlink" href="#module-engine" title="Permalink to this headline">¶</a></h1>
+<p>A Katana engine for Shotgun Toolkit.</p>
+<dl class="function">
+<dt id="engine.delay_until_ui_visible">
+<code class="descname">delay_until_ui_visible</code><span class="sig-paren">(</span><em>show_func</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.delay_until_ui_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper to delay showing dialogs until Katana Main UI is visible.</p>
+<p>If it is not possible to show right now, <code class="docutils literal notranslate"><span class="pre">None</span></code> will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>show_func</strong> (<em>callable</em>) – Show dialog method to wrap.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Wrapped function</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">callable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="engine.KatanaEngine">
+<em class="property">class </em><code class="descname">KatanaEngine</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sphinx.ext.autodoc.importer._MockObject</span></code></p>
+<p>An engine that supports Katana.</p>
+<dl class="attribute">
+<dt id="engine.KatanaEngine.UI_MAINWINDOW_INVISIBLE">
+<code class="descname">UI_MAINWINDOW_INVISIBLE</code><em class="property"> = 2</em><a class="headerlink" href="#engine.KatanaEngine.UI_MAINWINDOW_INVISIBLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="engine.KatanaEngine.UI_MAINWINDOW_NONE">
+<code class="descname">UI_MAINWINDOW_NONE</code><em class="property"> = 1</em><a class="headerlink" href="#engine.KatanaEngine.UI_MAINWINDOW_NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="engine.KatanaEngine.UI_MAINWINDOW_VISIBLE">
+<code class="descname">UI_MAINWINDOW_VISIBLE</code><em class="property"> = 3</em><a class="headerlink" href="#engine.KatanaEngine.UI_MAINWINDOW_VISIBLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.add_katana_menu">
+<code class="descname">add_katana_menu</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.add_katana_menu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.destroy_engine">
+<code class="descname">destroy_engine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.destroy_engine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="engine.KatanaEngine.has_ui">
+<code class="descname">has_ui</code><a class="headerlink" href="#engine.KatanaEngine.has_ui" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether Katana is running as a GUI/interactive session.</p>
+<p>If it is, return the corresponding UI state enum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Main Window state, else False if not in GUI mode.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">False or int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.init_engine">
+<code class="descname">init_engine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.init_engine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.launch_command">
+<code class="descname">launch_command</code><span class="sig-paren">(</span><em>cmd_id</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.launch_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="engine.KatanaEngine.main_window_ready">
+<em class="property">classmethod </em><code class="descname">main_window_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.main_window_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether Katana is fully started and the main window/menu is available.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether the main window is available.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.post_app_init">
+<code class="descname">post_app_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.post_app_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.pre_app_init">
+<code class="descname">pre_app_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.pre_app_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at startup.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.show_dialog">
+<code class="descname">show_dialog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.show_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to delay showing until UI is fully initialised.</p>
+<p>If it is not possible to show right now, <code class="docutils literal notranslate"><span class="pre">None</span></code> will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>title</strong> (<em>str</em>) – Title of the window. This will appear in the Toolkit title bar.</li>
+<li><strong>bundle</strong> (<em>sgtk.platform.bundle.TankBundle</em>) – The app, engine or framework associated with this window.</li>
+<li><strong>widget_class</strong> (<em>QtWidgets.QWidget</em>) – Class of the UI to be constructed, must subclass from QWidget.</li>
+<li><strong>args</strong> (<em>list</em>) – Arguments for the <code class="docutils literal notranslate"><span class="pre">widget_class</span></code> constructor.</li>
+<li><strong>kwargs</strong> (<em>list</em>) – Keyword arguments for the <code class="docutils literal notranslate"><span class="pre">widget_class</span></code> constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Widget of dialog shown, if any.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">QtWidgets.QWidget or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="engine.KatanaEngine.show_modal">
+<code class="descname">show_modal</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#engine.KatanaEngine.show_modal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to delay showing until UI is fully initialised.</p>
+<p>If it is not possible to show right now, <code class="docutils literal notranslate"><span class="pre">None</span></code> will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>title</strong> (<em>str</em>) – Title of the window. This will appear in the Toolkit title bar.</li>
+<li><strong>bundle</strong> (<em>sgtk.platform.bundle.TankBundle</em>) – The app, engine or framework associated with this window.</li>
+<li><strong>widget_class</strong> (<em>QtWidgets.QWidget</em>) – Class of the UI to be constructed, must subclass from QWidget.</li>
+<li><strong>args</strong> (<em>list</em>) – Arguments for the <code class="docutils literal notranslate"><span class="pre">widget_class</span></code> constructor.</li>
+<li><strong>kwargs</strong> (<em>list</em>) – Keyword arguments for the <code class="docutils literal notranslate"><span class="pre">widget_class</span></code> constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Widget of dialog shown, if any.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(int, QtWidgets.QWidget) or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hooks.html" class="btn btn-neutral float-right" title="hooks package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../reference/api.html" class="btn btn-neutral float-left" title="APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

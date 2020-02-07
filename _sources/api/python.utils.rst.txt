@@ -1,0 +1,18 @@
+python.utils package
+====================
+
+Submodules
+----------
+
+.. toctree::
+
+   python.utils.pyqt5patcher
+   python.utils.qtpyimporter
+
+Module contents
+---------------
+
+.. automodule:: python.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:

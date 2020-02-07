@@ -1,0 +1,18 @@
+python.tk\_katana package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+
+   python.tk_katana.menu_generation
+   python.tk_katana.panels
+
+Module contents
+---------------
+
+.. automodule:: python.tk_katana
+    :members:
+    :undoc-members:
+    :show-inheritance:

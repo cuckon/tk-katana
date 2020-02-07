@@ -1,0 +1,7 @@
+hooks.tk\-multi\-publish2.basic.publish\_session module
+=======================================================
+
+.. automodule:: hooks.tk_multi_publish2.basic.publish_session
+    :members:
+    :undoc-members:
+    :show-inheritance:

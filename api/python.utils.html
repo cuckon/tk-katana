@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>python.utils package &mdash; tk-katana v0.1.0+wwfx.1.8.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/icon_64_bw.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="python.utils.pyqt5patcher module" href="python.utils.pyqt5patcher.html" />
+    <link rel="prev" title="python.tk_katana.panels module" href="python.tk_katana.panels.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tk-katana
+          
+
+          
+            
+            <img src="../_static/icon_64_bw.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.0+wwfx.1.8.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log/History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How To</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/custom_shield_icons.html">Make custom shields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/generating_documentations.html">Generating documentations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference/api.html">APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="engine.html">engine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">hooks package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="python.html">python package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="python.startup.html">python.startup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python.tk_katana.html">python.tk_katana package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">python.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="python.utils.pyqt5patcher.html">python.utils.pyqt5patcher module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python.utils.qtpyimporter.html">python.utils.qtpyimporter module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="python.vendor.html">python.vendor package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">resources package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup.html">startup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tk-katana</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../reference/api.html">APIs</a> &raquo;</li>
+        
+          <li><a href="python.html">python package</a> &raquo;</li>
+        
+      <li>python.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/wwfxuk/tk-katana/blob/master/docs/api/python.utils.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-utils-package">
+<h1>python.utils package<a class="headerlink" href="#python-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="python.utils.pyqt5patcher.html">python.utils.pyqt5patcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.utils.qtpyimporter.html">python.utils.qtpyimporter module</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-python.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-python.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="python.utils.PyQt5Patcher">
+<em class="property">class </em><code class="descname">PyQt5Patcher</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#python.utils.PyQt5Patcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sphinx.ext.autodoc.importer._MockObject</span></code></p>
+<p>Patch remaining PyQt5 binding after Qt.py for PySide 1.</p>
+<p>So yes, this patcher is used <strong>specifically</strong> after Qt.py patched
+most of PyQt5 bindings for PySide2.</p>
+<p>It patches any remaining (Py)Qt5 bindings for PySide 1 since that’s what
+Shotgun still seems to mainly target as of May 2019.</p>
+<p>Originally developed for Katana 3.1 for use in <code class="docutils literal notranslate"><span class="pre">tk-katana</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Katana 3.1 (PyQt5)
+        |
+        V
+      Qt.py
+      ^^^^^
+        |
+        | Converts PyQt5 for PySide2 compatibility
+        V
+ PySide2Patcher (parent class from sgtk.util)
+ ^^^^^^^^^^^^^^
+        |
+        |  Converts PySide2 for PySide 1 compatibility
+        V
+   PyQt5Patcher (that&#39;s me!)
+   ^^^^^^^^^^^^
+        |
+        |  Converts any remaining PyQt5 for PySide 1 compatibility
+        V
+   KatanaEngine._define_qt_base
+   ^^^^^^^^^^^^
+        |
+        |  Engine then exposes Qt bindings publicly through...
+        V
+ sgtk.platform.qt
+</pre></div>
+</div>
+<dl class="classmethod">
+<dt id="python.utils.PyQt5Patcher.patch">
+<em class="property">classmethod </em><code class="descname">patch</code><span class="sig-paren">(</span><em>QtCore</em>, <em>QtGui</em>, <em>QtWidgets</em><span class="sig-paren">)</span><a class="headerlink" href="#python.utils.PyQt5Patcher.patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Patches QtCore, QtGui and QtWidgets</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>QtCore</strong> (<em>module</em>) – The QtCore module to patch.</li>
+<li><strong>QtGui</strong> (<em>module</em>) – The QtGui module to patch.</li>
+<li><strong>QtWidgets</strong> (<em>module</em>) – The QtWidgets module to patch.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="python.utils.QtPyImporter">
+<em class="property">class </em><code class="descname">QtPyImporter</code><span class="sig-paren">(</span><em>qt=None</em>, <em>interface_version_requested=&lt;sphinx.ext.autodoc.importer._MockObject object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#python.utils.QtPyImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sphinx.ext.autodoc.importer._MockObject</span></code></p>
+<p>Extend QtImporter to use Qt.py.</p>
+<p>Due to our patcher and Qt.py is local to tk_katana, this class is
+defined within this method to utilise modules imported by
+the engine’s <code class="docutils literal notranslate"><span class="pre">import_module()</span></code>.</p>
+<dl class="attribute">
+<dt id="python.utils.QtPyImporter.logger">
+<code class="descname">logger</code><a class="headerlink" href="#python.utils.QtPyImporter.logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard Python logger for this Importer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">logging.Logger</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.utils.QtPyImporter.interface_version_requested">
+<code class="descname">interface_version_requested</code><a class="headerlink" href="#python.utils.QtPyImporter.interface_version_requested" title="Permalink to this definition">¶</a></dt>
+<dd><p>Qt interface version requested during construction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python.utils.QtPyImporter.base">
+<code class="descname">base</code><a class="headerlink" href="#python.utils.QtPyImporter.base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of Qt module, class and bindings names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">dict[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="docutils">
+<dt>To Do:</dt>
+<dd>Refactor and upstream our attributes to
+<code class="docutils literal notranslate"><span class="pre">sgtk.util.qt_importer.QtImporter</span></code>.</dd>
+</dl>
+<dl class="attribute">
+<dt>
+<code class="descname">base</code></dt>
+<dd><p>Extends the parent property for older, Qt4 based interfaces.</p>
+<p>The parent <code class="docutils literal notranslate"><span class="pre">QtImporter.base</span></code> seems to only be used
+exclusively when <code class="docutils literal notranslate"><span class="pre">interface_version_requested</span></code> was Qt5.</p>
+<p>To make it useful for older Qt4 interfaces, the following
+common mappings are used instead for Qt4 as inspired by
+<code class="docutils literal notranslate"><span class="pre">tank.platform.engine.Engine._define_qt_base</span></code> :</p>
+<ul class="simple">
+<li>“qt_core”, QtCore module to use</li>
+<li>“qt_gui”, QtGui module to use</li>
+<li>“wrapper”, Qt wrapper root module, e.g. PySide</li>
+<li>“dialog_base”, base class for Tank’s dialog factory.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Mapping of Qt module, class and bindings names.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict[str]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">interface_version_requested</code></dt>
+<dd><p>Get the interface version requested during construction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Qt interface version requested during construction.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logger</code></dt>
+<dd><p>Get the Python logger</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Standard Python logger for this importer.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">logging.Logger</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="python.utils.pyqt5patcher.html" class="btn btn-neutral float-right" title="python.utils.pyqt5patcher module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="python.tk_katana.panels.html" class="btn btn-neutral float-left" title="python.tk_katana.panels module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, The Foundry, Shotgunsoftware, Rob Blau, Joseph Yu, Liam Hoflay
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

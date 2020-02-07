@@ -1,0 +1,17 @@
+resources.Katana.Shelves.Shotgun package
+========================================
+
+Submodules
+----------
+
+.. toctree::
+
+   resources.Katana.Shelves.Shotgun.create_info_node
+
+Module contents
+---------------
+
+.. automodule:: resources.Katana.Shelves.Shotgun
+    :members:
+    :undoc-members:
+    :show-inheritance:

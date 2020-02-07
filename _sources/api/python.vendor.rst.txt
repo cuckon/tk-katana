@@ -1,0 +1,17 @@
+python.vendor package
+=====================
+
+Submodules
+----------
+
+.. toctree::
+
+   python.vendor.Qt
+
+Module contents
+---------------
+
+.. automodule:: python.vendor
+    :members:
+    :undoc-members:
+    :show-inheritance:
