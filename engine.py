@@ -18,8 +18,6 @@ from Katana import Configuration
 import UI4.App.MainWindow
 
 
-katana_logger = logging.getLogger("tk-katana.engine")
-
 __all__ = ('delay_until_ui_visible', 'KatanaEngine')
 
 
@@ -76,6 +74,10 @@ class KatanaEngine(sgtk.platform.Engine):
     def __init__(self, *args, **kwargs):
         self._ui_enabled = bool(Configuration.get('KATANA_UI_MODE'))
         super(KatanaEngine, self).__init__(*args, **kwargs)
+
+        # Add Katana's handlers to engine's Shotgun logger
+        for katana_handler in logging.getLogger().handlers:
+            self.logger.addHandler(katana_handler)
 
     @property
     def has_ui(self):
@@ -245,26 +247,3 @@ class KatanaEngine(sgtk.platform.Engine):
         vendor = self.import_module("vendor")
         utils = self.import_module("utils")
         return utils.QtPyImporter(vendor.Qt).base
-
-    def _emit_log_message(self, handler, record):
-        """
-        Called by the engine to log messages in Katana.
-        All log messages from the toolkit logging namespace will be passed to this method.
-
-        :param handler: Log handler that this message was dispatched from.
-                        Its default format is "[levelname basename] message".
-        :type handler: :class:`~python.logging.LogHandler`
-        :param record: Standard python logging record.
-        :type record: :class:`~python.logging.LogRecord`
-        """
-        # Give a standard format to the message:
-        #     Shotgun <basename>: <message>
-        # where "basename" is the leaf part of the logging record name,
-        # for example "tk-multi-shotgunpanel" or "qt_importer".
-        if record.levelno < logging.INFO:
-            formatter = logging.Formatter("Debug: Shotgun %(basename)s: %(message)s")
-        else:
-            formatter = logging.Formatter("Shotgun %(basename)s: %(message)s")
-
-        msg = formatter.format(record)
-        katana_logger.log(record.levelno, msg)
