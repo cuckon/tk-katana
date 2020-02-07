@@ -6,6 +6,7 @@
 A Katana engine for Shotgun Toolkit.
 """
 from distutils.version import StrictVersion
+from functools import partial, wraps
 import logging
 import os
 import traceback
@@ -19,13 +20,58 @@ import UI4.App.MainWindow
 
 katana_logger = logging.getLogger("tk-katana.engine")
 
-__all__ = ('KatanaEngine',)
+__all__ = ('delay_until_ui_visible', 'KatanaEngine')
+
+
+def delay_until_ui_visible(show_func):
+    """Wrapper to delay showing dialogs until Katana Main UI is visible.
+
+    If it is not possible to show right now, ``None`` will be returned.
+
+    Args:
+        show_func (callable): Show dialog method to wrap.
+
+    Returns:
+        callable: Wrapped function
+
+    """
+    @wraps(show_func)
+    def wrapper(self, *args, **kwargs):
+        result = None
+        ui_state = self.has_ui
+        window_title = '"{args[0]}" ({args[2].__name__})'.format(args=args)
+
+        if ui_state == self.UI_MAINWINDOW_VISIBLE:
+            # Remove added kwarg from Katana's Callbacks.addCallback
+            kwargs.pop('objectHash', None)
+            result = show_func(self, *args, **kwargs)
+
+        elif ui_state:
+            self.logger.info(
+                'Delaying %s for %s until Katana main window is showing.',
+                show_func.__name__, window_title,
+            )
+            func = partial(wrapper, self, *args, **kwargs)
+            Callbacks.addCallback(Callbacks.Type.onStartupComplete, func)
+        else:
+            self.logger.error(
+                "Sorry, this environment doesn't support UI display! Can't"
+                ' show the requested window %s.', window_title,
+            )
+
+        # lastly, return the instantiated widget
+        return result
+
+    return wrapper
 
 
 class KatanaEngine(sgtk.platform.Engine):
     """
     An engine that supports Katana.
     """
+    UI_MAINWINDOW_NONE = 1
+    UI_MAINWINDOW_INVISIBLE = 2
+    UI_MAINWINDOW_VISIBLE = 3
 
     def __init__(self, *args, **kwargs):
         self._ui_enabled = bool(Configuration.get('KATANA_UI_MODE'))
@@ -33,9 +79,21 @@ class KatanaEngine(sgtk.platform.Engine):
 
     @property
     def has_ui(self):
+        """Whether Katana is running as a GUI/interactive session.
+
+        If it is, return the corresponding UI state enum.
+
+        Returns:
+            False or int: Main Window state, else False if not in GUI mode.
         """
-        Whether Katana is running as a GUI/interactive session.
-        """
+        if self._ui_enabled:
+            window = UI4.App.MainWindow.GetMainWindow()
+            if window is None:
+                return self.UI_MAINWINDOW_NONE
+            elif window.isVisible():
+                return self.UI_MAINWINDOW_VISIBLE
+            else:
+                return self.UI_MAINWINDOW_INVISIBLE
         return self._ui_enabled
 
     @classmethod
@@ -109,6 +167,56 @@ class KatanaEngine(sgtk.platform.Engine):
             self.logger.error("No callback found for id: %s", cmd_id)
             return
         callback()
+
+    @delay_until_ui_visible
+    def show_dialog(self, title, bundle, widget_class, *args, **kwargs):
+        """Overridden to delay showing until UI is fully initialised.
+
+        If it is not possible to show right now, ``None`` will be returned.
+
+        Args:
+            title (str):
+                Title of the window. This will appear in the Toolkit title bar.
+            bundle (sgtk.platform.bundle.TankBundle):
+                The app, engine or framework associated with this window.
+            widget_class (QtWidgets.QWidget):
+                Class of the UI to be constructed, must subclass from QWidget.
+            args (list):
+                Arguments for the ``widget_class`` constructor.
+            kwargs (list):
+                Keyword arguments for the ``widget_class`` constructor.
+
+        Returns:
+            QtWidgets.QWidget or None: Widget of dialog shown, if any.
+        """
+        return super(KatanaEngine, self).show_dialog(
+            title, bundle, widget_class, *args, **kwargs
+        )
+
+    @delay_until_ui_visible
+    def show_modal(self, title, bundle, widget_class, *args, **kwargs):
+        """Overridden to delay showing until UI is fully initialised.
+
+        If it is not possible to show right now, ``None`` will be returned.
+
+        Args:
+            title (str):
+                Title of the window. This will appear in the Toolkit title bar.
+            bundle (sgtk.platform.bundle.TankBundle):
+                The app, engine or framework associated with this window.
+            widget_class (QtWidgets.QWidget):
+                Class of the UI to be constructed, must subclass from QWidget.
+            args (list):
+                Arguments for the ``widget_class`` constructor.
+            kwargs (list):
+                Keyword arguments for the ``widget_class`` constructor.
+
+        Returns:
+            (int, QtWidgets.QWidget) or None: Widget of dialog shown, if any.
+        """
+        return super(KatanaEngine, self).show_modal(
+            title, bundle, widget_class, *args, **kwargs
+        )
 
     def _define_qt_base(self):
         """Override to setup PyQt5 bindings for PySide 1 using Qt.py.
