@@ -100,6 +100,12 @@ class KatanaActions(HookBaseClass):
                                       "caption": "Import image",
                                       "description": "Creates an ImageRead node for the selected item."} )
 
+        if "texture_shader" in actions:
+            action_instances.append( {"name": "texture_shader",
+                                      "params": None,
+                                      "caption": "Shading Texture Node",
+                                      "description": "Create a renderer specific, shading node for image"} )
+
         return action_instances
 
     def execute_multiple_actions(self, actions):
@@ -179,6 +185,11 @@ class KatanaActions(HookBaseClass):
                 path_parameter="file",
             )
 
+        if name == "texture_shader":
+            # PublishedFile "name" with anything after "." removed
+            name = bytes(sg_publish_data['code'].split('.', 1)[0])
+            self._create_texture_node(path, name=name)
+
     ##############################################################################################################
     # helper methods which can be subclassed in custom hooks to fine tune the behaviour of things
 
@@ -210,4 +221,59 @@ class KatanaActions(HookBaseClass):
         node = NodegraphAPI.CreateNode(node_type, parent=root)
         node.setName("{entity[type]} {entity[name]}".format(entity=entity))
         node.getParameter(path_parameter).setValue(path, 0)
+        return node
+
+    def _create_texture_node(self, filename, name=None, parent=None):
+        """Create texture input node for renderer, or just for viewer.
+
+        Based off ``DEFAULT_RENDERER`` environment variable, either:
+
+        - ``arnold``: Arnold Shading Node with file path for image
+          ``filename``.
+        - ``prman``: Prman Shading Node with file path for ``PxrTexture``.
+        - Otherwise, a ``Material`` node with file path for texture
+          ``viewerSurfaceShader``.
+
+        :param filename: File path for image ``filename`` parameter.
+        :type filename: str
+        :keyword name: Name of the node.
+        :type name: str
+        :keyword parent: Parent ``GroupNode`` for our node.
+        :type parent: GroupNode
+        :return: The created Texture shading node.
+        """
+        parent = parent or NodegraphAPI.GetRootNode()
+        renderer = os.environ['DEFAULT_RENDERER']
+
+        if renderer == 'arnold':
+            node = NodegraphAPI.CreateNode("ArnoldShadingNode", parent=parent)
+            node.getParameter('nodeType').setValue(b'image', 0)
+            node.checkDynamicParameters()
+            filename_param = node.getParameter('parameters.filename')
+            filename_param.getChild('value').setValue(filename, 0)
+            filename_param.getChild('enable').setValue(True, 0)
+
+        elif renderer == 'prman':
+            node = NodegraphAPI.CreateNode("PrmanShadingNode", parent=parent)
+            node.getParameter('nodeType').setValue(b'PxrTexture', 0)
+            node.checkDynamicParameters()
+            filename_param = node.getParameter('parameters.filename')
+            filename_param.getChild('value').setValue(filename, 0)
+            filename_param.getChild('enable').setValue(True, 0)
+
+        else:
+            warning = 'No idea how to import textures for renderer: "{}"'
+            self.logger.warning(warning.format(renderer))
+            self.logger.warning('Creating Katana viewerSurfaceShader')
+
+            shader_type = 'viewerSurface'
+            node = NodegraphAPI.CreateNode("Material", parent=parent)
+            shader_param = node.addShaderType(shader_type)
+            shader_param.getChild('enable').setValue(True, 0)
+            shader_param.getChild('value').setValue(b'texture', 0)
+            node.checkDynamicParameters()
+            node.setShaderParam(shader_type, 'filename', filename)
+
+        if name is not None:
+            node.getParameter('name').setValue(name, 0)
         return node

@@ -5,10 +5,10 @@ settings.tk-multi-loader2.katana:
   actions_hook: '{engine}/tk-multi-loader2/tk-katana_actions.py'
   action_mappings:
     Alembic Cache: [import_alembic]
-    Image: [import_image]
+    Image: [import_image, texture_shader]
     Photoshop Image: [import_image]
-    Rendered Image: [import_image]
-    Texture: [import_image]
+    Rendered Image: [import_image, texture_shader]
+    Texture: [texture_shader, import_image]
     Katana Look File: [import_look_file]
     Katana File: [import_project]
   entities:
