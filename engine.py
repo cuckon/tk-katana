@@ -98,16 +98,6 @@ class KatanaEngine(sgtk.platform.Engine):
                 return self.UI_MAINWINDOW_INVISIBLE
         return self._ui_enabled
 
-    @classmethod
-    def main_window_ready(cls):
-        """
-        Whether Katana is fully started and the main window/menu is available.
-
-        Returns:
-            bool: Whether the main window is available.
-        """
-        return bool(UI4.App.MainWindow.GetMainWindow())
-
     def init_engine(self):
         self.logger.debug("%s: Initializing...", self)
         os.environ["SGTK_KATANA_ENGINE_INIT_NAME"] = self.instance_name
@@ -134,7 +124,7 @@ class KatanaEngine(sgtk.platform.Engine):
     def post_app_init(self):
         if self.has_ui:
             try:
-                if self.main_window_ready():
+                if self.has_ui > self.UI_MAINWINDOW_NONE:
                     self.add_katana_menu()
                 else:
                     self.logger.debug(
@@ -153,7 +143,7 @@ class KatanaEngine(sgtk.platform.Engine):
                 )
 
     def destroy_engine(self):
-        if self.has_ui and self.main_window_ready():
+        if self.has_ui > self.UI_MAINWINDOW_NONE:
             self.logger.debug("%s: Destroying...", self)
             try:
                 self._menu_generator.destroy_menu()
