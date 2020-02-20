@@ -7,8 +7,10 @@ A Katana engine for Shotgun Toolkit.
 """
 from distutils.version import StrictVersion
 from functools import partial, wraps
+import glob
 import logging
 import os
+import re
 import traceback
 
 import sgtk
@@ -61,6 +63,62 @@ def delay_until_ui_visible(show_func):
         return result
 
     return wrapper
+
+
+def frames_from_path(path):
+    """Get sorted list of frame numbers from a given path.
+
+    Limited currently to only finding frame number directly before the
+    file extension, i.e. first part from `os.path.splitext(path)`.
+
+    Supports extracting frame numbers from these sequence definitions:
+
+    - Just numbers: `1023` or `000` or `99`
+    - Just hashes: `####` for to match frames like `0909` or `1182`
+    - `0*d` with optional `%`: `%03d` to match frames like `023` and `248`
+
+    See Also:
+        `NukeActions._sequence_range_from_path()` from
+        `tk-multi-loader2(v1.19.3)/hooks/tk-nuke_actions.py`
+
+    Args:
+        path (str): File path with a sequence definition in it.
+
+    Returns:
+        list[int]: Sorted list of frame numbers.
+    """
+    frames = []
+    sequence_pattern = re.compile(
+        r"(?P<numbers>[0-9]+)$"        # e.g. 1023 or 000 or 99
+        r"|(?P<hashes>#+)$"            # e.g. ####
+        r"|[%]0(?P<percentage>\d+)d$"  # e.g. 02d or %04d or 010d
+    )
+    root, ext = os.path.splitext(path)
+    matched = sequence_pattern.search(root)
+    if matched:
+        glob_expr = "[0-9]"
+        for style, text in matched.groupdict().items():
+            if text is not None:
+                if style in ['hashes', 'numbers']:
+                    glob_expr *= len(text)  # "[0-9][0-9]" for "00" or "##"
+                elif style == 'percentage':
+                    glob_expr *= int(text)  # "[0-9][0-9]" for "2" in "%02d"
+                else:
+                    glob_expr = "*"
+                break
+
+        # e.g. "/path/to/file_*.png", "/path/to/file.[0-9][0-9][0-9].exr"
+        glob_path = "%s%s" % (sequence_pattern.sub(glob_expr, root), ext)
+
+        # e.g. "\d+$" or "[0-9][0-9][0-9]$"
+        frames_pattern = "%s$" % (r'\d+' if glob_expr == "*" else glob_expr)
+
+        for file_path in glob.iglob(glob_path):
+            root = os.path.splitext(file_path)[0]
+            frame_text = re.search(frames_pattern, root).group(0)
+            frames.append(int(frame_text))
+
+    return list(sorted(frames)) or None
 
 
 class KatanaEngine(sgtk.platform.Engine):
