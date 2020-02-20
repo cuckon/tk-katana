@@ -79,6 +79,23 @@ class KatanaEngine(sgtk.platform.Engine):
         for katana_handler in logging.getLogger().handlers:
             self.logger.addHandler(katana_handler)
 
+        # Cache all sgtk.SequenceKey from all templates
+        sequence_keys = set()
+        for template in self.sgtk.templates.values():
+            for key in template.keys.values():
+                if isinstance(key, sgtk.SequenceKey):
+                    sequence_keys.add(key)
+        self._sequence_keys = tuple(sequence_keys)
+
+    @property
+    def sequence_keys(self):
+        """Get stored cached of all templates' sequnce keys.
+
+        Returns:
+            tuple[sgtk.SequenceKey]: All templates' sequence keys.
+        """
+        return self._sequence_keys
+
     @property
     def has_ui(self):
         """Whether Katana is running as a GUI/interactive session.
