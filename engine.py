@@ -312,3 +312,106 @@ class KatanaEngine(sgtk.platform.Engine):
         vendor = self.import_module("vendor")
         utils = self.import_module("utils")
         return utils.QtPyImporter(vendor.Qt).base
+
+    def find_sequence_frames(self, path):
+        """
+        Helper method attempting to extract sequence information.
+
+        Using the toolkit template system, the path will be probed to
+        check if it is a sequence, and if so, frame information is
+        attempted to be extracted.
+
+        :param path: Path to file on disk.
+        :returns: None if no range could be determined, otherwise (min, max)
+        """
+        frames = []
+
+        # find a template that matches the path:
+        template = None
+        try:
+            template = self.sgtk.template_from_path(path)
+        except sgtk.TankError as error:
+            self.logger.exception(error)
+
+        if template is None:
+            # If we don't have a template to take advantage of, then
+            # we are forced to do some rough parsing ourself to try
+            # to determine the frame range.
+            frames = frames_from_path(path)
+        else:
+            # get the fields and find all matching files:
+            fields = template.get_fields(path)
+            fields_sequence_key_names = [
+                key.name
+                for key in self._sequence_keys
+                if key.name in fields
+            ]
+
+            if len(fields_sequence_key_names) == 1:
+                sequence_key_name = fields_sequence_key_names[0]
+                file_paths = self.sgtk.paths_from_template(
+                    template,
+                    fields,
+                    skip_keys=[sequence_key_name, "eye"],
+                )
+                # find frame numbers from these files:
+                for path in file_paths:
+                    frame = template.get_fields(path).get(sequence_key_name)
+                    if frame is not None:
+                        frames.append(frame)
+                frames = list(sorted(frames))
+
+        return frames or None
+
+    def as_katana_friendly_path(self, path):
+        # find a template that matches the path:
+        template = None
+        try:
+            template = self.sgtk.template_from_path(path)
+        except sgtk.TankError as error:
+            self.logger.exception(error)
+
+        if template is None:
+            # If we don't have a template to take advantage of, then
+            # we are forced to do some rough parsing ourself to try
+            # to determine the frame range.
+            frames = frames_from_path(path)
+        else:
+            # get the fields and find all matching files:
+            fields = template.get_fields(path)
+            fields_sequence_key_names = [
+                key.name
+                for key in self._sequence_keys
+                if key.name in fields
+            ]
+
+            if len(fields_sequence_key_names) == 1:
+                sequence_key_name = fields_sequence_key_names[0]
+                file_paths = self.sgtk.paths_from_template(
+                    template,
+                    fields,
+                    skip_keys=[sequence_key_name, "eye"],
+                    )
+                # find frame numbers from these files:
+                for path in file_paths:
+                    frame = template.get_fields(path).get(sequence_key_name)
+                    if frame is not None:
+                        frames.append(frame)
+                frames = list(sorted(frames))
+
+        if frames:
+            if template:
+                # get the fields and find all matching files:
+                fields = template.get_fields(path)
+                fields_sequence_key_names = [
+                    key.name
+                    for key in self._sequence_keys
+                    if key.name in fields
+                    ]
+
+                if len(fields_sequence_key_names) == 1:
+
+        else:
+            friendly_path = path
+
+        return friendly_path

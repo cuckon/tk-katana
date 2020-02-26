@@ -208,8 +208,8 @@ class KatanaActions(HookBaseClass):
         """
         Generic node creation method.
         """
-        if not os.path.exists(path):
-            raise IOError(errno.ENOENT, "File not found on disk", path)
+        # if not os.path.exists(path):
+        #     raise IOError(errno.ENOENT, "File not found on disk", path)
 
         entity = {
             "type": sg_publish_data.get("entity", {}).get("name", "UNKNOWN"),
@@ -219,8 +219,12 @@ class KatanaActions(HookBaseClass):
         # Create node
         root = NodegraphAPI.GetRootNode()
         node = NodegraphAPI.CreateNode(node_type, parent=root)
-        node.setName("{entity[type]} {entity[name]}".format(entity=entity))
+
+        # if node_type == 'ImageRead':
+        #     path = entity["name"]  # typically %04d Katana
+
         node.getParameter(path_parameter).setValue(path, 0)
+        node.setName(os.path.basename(path).split('.', 1)[0])
         return node
 
     def _create_texture_node(self, filename, name=None, parent=None):
