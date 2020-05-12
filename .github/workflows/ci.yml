@@ -16,11 +16,54 @@ env:
     yum install -y cmake3 devtoolset-6
 
 jobs:
+  docs:
+    name: Sphinx Docs
+    runs-on: ubuntu-latest
+    env:
+      DOCS_DIR: docs
+      API_RELATIVE_DIR: api
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - run: pip install PyYAML sphinx-rtd-theme PyQt5
+
+    - run: bash docs/docker/build-docs.sh docs/_build
+
+    - name: Git commit, force push gh-pages
+      if: github.ref == 'refs/heads/master'
+      run: |
+        scl enable rh-git218 - << EOF
+        set -eufx -o pipefail
+
+        git config user.name "github.com/${{ github.actor }}"
+        git config user.email "${{ github.actor }}@${{ github.sha }}"
+        git checkout -B gh-pages
+
+        mv .git docs/_build
+        cd docs/_build
+
+        git add .
+        git commit \
+            -m "Generated from GitHub "${{ github.workflow }}" Workflow" \
+            -m "See https://github.com/${{ github.repository }}/runs/${GITHUB_ACTION}" \
+            && git push --force origin gh-pages \
+            || echo "Nothing new to commit and push"
+
+        EOF
+
   compile-pybind11:
     name: Compile PyBind11
     runs-on: ubuntu-latest
     # container: aswf/ci-base:2020  # 3 mins to setup lol
-    container: centos:7
+    container:
+      image: centos:7
+      volumes:
+      - ${{ github.workspace }}/pybind11:${{ github.workspace }}/pybind11
+
     timeout-minutes: 4
 
     steps:
@@ -52,7 +95,11 @@ jobs:
     name: "Build Plugin for ${{ matrix.version }}"
     runs-on: ubuntu-latest
     needs: compile-pybind11
-    container: centos:7
+    container:
+      image: centos:7
+      volumes:
+      - ${{ github.workspace }}/pybind11:${{ github.workspace }}/pybind11
+
     strategy:
       matrix:
         version: ["3.1v2", "3.5v2"]
