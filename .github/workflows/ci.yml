@@ -55,7 +55,6 @@ jobs:
   build:
     name: "Build Plugin for ${{ matrix.version }}"
     runs-on: ubuntu-latest
-    needs: compile-pybind11
     container:
       image: centos:7
       volumes:
@@ -77,29 +76,35 @@ jobs:
 
     - name: Build plugin
       run: |
+        install_dependencies() {
+            yum install -y centos-release-scl epel-release yum-utils
+            curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
+            yum install -y cmake3 devtoolset-6
+        }
+
+        install_pybind() {
+            pushd pybind11/src
+            scl enable devtoolset-6 - << EOF
+            cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
+            make -j "$(nproc)"
+            make install
+            EOF
+            popd
+        }
+
+        install_katana() {
+            mkdir katana
+            curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
+            | tar -xzO katana_files.tar.gz | tar -xz -C katana
+        }
+
         set -x
+        time install_dependencies
+        time install_pybind
+        time install_katana
 
-        # Install dependencies
-        yum install -y centos-release-scl epel-release yum-utils
-        curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
-        yum install -y cmake3 devtoolset-6
-
-        # Install PyBind 11
-        pushd pybind11/src
-        scl enable devtoolset-6 - << EOF
-        cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
-        make -j "$(nproc)"
-        make install
-        EOF
-        popd
         PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
-
-        # Install Katana
-        mkdir katana
         KATANA_LOCATION="$(readlink -e katana)"
-        curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
-        | tar -xz -C installer -O katana_files.tar.gz | tar -xz -C "$KATANA_LOCATION"
-
         KATANA_PYTHON="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/include/python2.7)"
         PYTHON_LIB="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/lib)"
 
