@@ -15,7 +15,8 @@ jobs:
   compile-pybind11:
     name: Compile PyBind11
     runs-on: ubuntu-latest
-    container: aswf/ci-base:2020
+    # container: aswf/ci-base:2020  # 3 mins to setup lol
+    container: centos:7
 
     steps:
     - name: Checkout PyBind11
@@ -26,8 +27,12 @@ jobs:
         path: pybind11/src
 
     - name: Install PyBind11
+      working-directory: pybind11/src
       run: |
-        cd pybind11/src
+        yum install -y centos-release-scl epel-release yum-utils
+        curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
+        yum install -y cmake3 devtoolset-6
+        
         scl enable devtoolset-6 - << EOF
         cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
         make -j "$(nproc)"
