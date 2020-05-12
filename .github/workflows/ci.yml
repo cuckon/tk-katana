@@ -8,7 +8,7 @@ name: CI
 #   pull_request:
 #     paths:
 #     - 'src/**'
-on: [pull_request]
+on: [push]
 
 
 jobs:
