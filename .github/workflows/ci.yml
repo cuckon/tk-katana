@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     # container: aswf/ci-base:2020  # 3 mins to setup lol
     container: centos:7
+    timeout-minutes: 4
 
     steps:
     - name: Checkout PyBind11
@@ -65,24 +66,24 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: Install Katana
-      run: |
-        mkdir installer
-        curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
-        | tar -xz -C installer
-        mkdir katana
-        tar -xz -C katana -f installer/katana_files.tar.gz
-
     - name: Build plugin
       run: |
+        set -x
+        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
+
         ${{ env.YUM_DEPS_CMD }}
+
+        # Install Katana
+        mkdir katana
+        KATANA_LOCATION="$(readlink -e katana)"
+        curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
+        | tar -xz -C installer -O katana_files.tar.gz | tar -xz -C "$KATANA_LOCATION"
+
+        KATANA_PYTHON="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/include/python2.7)"
+        PYTHON_LIB="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/lib)"
 
         mkdir build
         cd build
-        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
-        KATANA_LOCATION="$(readlink -e katana)"
-        KATANA_PYTHON="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/include/python2.7)"
-        PYTHON_LIB="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/lib)"
         scl enable devtoolset-6 - << EOF
         command -v cmake3
         echo cmake3 ../src \
