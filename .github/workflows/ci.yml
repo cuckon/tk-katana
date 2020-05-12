@@ -1,0 +1,42 @@
+name: CI
+
+# # Compile only on changes to src folder
+# on:
+#   push:
+#     paths:
+#     - 'src/**'
+#   pull_request:
+#     paths:
+#     - 'src/**'
+on: [pull_request]
+
+
+jobs:
+  compile-pybind11:
+    name: Compile PyBind11
+    runs-on: ubuntu-latest
+    container: aswf/ci-base:2020
+
+    steps:
+    - name: Checkout PyBind11
+      uses: actions/checkout@v2
+      with:
+        repository: pybind/pybind11
+        ref: v2.4.3
+        path: pybind11/src
+
+    - name: Install PyBind11
+      run: |
+        cd pybind11/src
+        scl enable devtoolset-6 - << EOF
+        cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
+        make -j "$(nproc)"
+        make install
+        EOF
+
+    - name: Upload headers
+      uses: actions/upload-artifact@v1
+      with:
+        name: pybind11-headers
+        path: pybind11/include
+
