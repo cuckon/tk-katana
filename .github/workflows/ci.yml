@@ -11,9 +11,6 @@ name: CI
 on: [push]
 env:
   YUM_DEPS_CMD: |
-    yum install -y centos-release-scl epel-release yum-utils
-    curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
-    yum install -y cmake3 devtoolset-6
 
 jobs:
   docs:
@@ -55,42 +52,6 @@ jobs:
 
         EOF
 
-  compile-pybind11:
-    name: Compile PyBind11
-    runs-on: ubuntu-latest
-    # container: aswf/ci-base:2020  # 3 mins to setup lol
-    container:
-      image: centos:7
-      volumes:
-      - ${{ github.workspace }}/pybind11:${{ github.workspace }}/pybind11
-
-    timeout-minutes: 4
-
-    steps:
-    - name: Checkout PyBind11
-      uses: actions/checkout@v2
-      with:
-        repository: pybind/pybind11
-        ref: v2.4.3
-        path: pybind11/src
-
-    - name: Install PyBind11
-      working-directory: pybind11/src
-      run: |
-        ${{ env.YUM_DEPS_CMD }}
-
-        scl enable devtoolset-6 - << EOF
-        cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
-        make -j "$(nproc)"
-        make install
-        EOF
-
-    - name: Upload headers
-      uses: actions/upload-artifact@v1
-      with:
-        name: pybind11-headers
-        path: pybind11/include
-
   build:
     name: "Build Plugin for ${{ matrix.version }}"
     runs-on: ubuntu-latest
@@ -105,20 +66,33 @@ jobs:
         version: ["3.1v2", "3.5v2"]
 
     steps:
-    - name: Download PyBind11 Headers
-      uses: actions/download-artifact@v1
-      with:
-        name: pybind11-headers
-        path: pybind11/include
-
     - uses: actions/checkout@v2
+
+    - name: Checkout PyBind11
+      uses: actions/checkout@v2
+      with:
+        repository: pybind/pybind11
+        ref: v2.4.3
+        path: pybind11/src
 
     - name: Build plugin
       run: |
         set -x
-        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
 
-        ${{ env.YUM_DEPS_CMD }}
+        # Install dependencies
+        yum install -y centos-release-scl epel-release yum-utils
+        curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
+        yum install -y cmake3 devtoolset-6
+
+        # Install PyBind 11
+        pushd pybind11/src
+        scl enable devtoolset-6 - << EOF
+        cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
+        make -j "$(nproc)"
+        make install
+        EOF
+        popd
+        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
 
         # Install Katana
         mkdir katana
