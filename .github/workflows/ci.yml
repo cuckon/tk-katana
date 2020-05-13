@@ -11,6 +11,19 @@ name: CI
 on: [push]
 
 jobs:
+  black:
+    name: Black formatted
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - run: pip install black
+    - run: find -name '*.py' | xargs black
+    - run: git diff --exit-code --color-words
+
   build:
     name: "Build Plugin for ${{ matrix.version }}"
     runs-on: ubuntu-latest
