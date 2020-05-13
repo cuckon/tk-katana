@@ -19,6 +19,7 @@ jobs:
       volumes:
       - ${{ github.workspace }}/pybind11:${{ github.workspace }}/pybind11
       - ${{ github.workspace }}/katana:${{ github.workspace }}/katana
+      - ${{ github.workspace }}/build:${{ github.workspace }}/build
 
     strategy:
       matrix:
@@ -53,16 +54,23 @@ jobs:
       working-directory: katana
       run: >
         curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz"
-        | tar -xzO katana_files.tar.gz | tar -xz -C katana
+        | tar -xzO katana_files.tar.gz | tar -xz
 
     - name: Build plugin
+      working-directory: build
       run: |
         cat /etc/centos-release
         command -v cmake3
 
         set -x -o pipefail
-        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
-        KATANA_LOCATION="$(readlink -e katana)"
+        PYBIND_INCLUDE_DIR="$(readlink -e ../pybind11/include)"
+        KATANA_LOCATION="$(readlink -e ../katana)"
         KATANA_PYTHON="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/include/python2.7)"
         PYTHON_LIB="$(readlink -e ${KATANA_LOCATION}/bin/python2.7/lib)"
 
+        scl enable devtoolset-6 - << EOF
+        gcc --version >> gcc-version
+        EOF
+
+    - name: Check built
+      run: find build ! -type d
