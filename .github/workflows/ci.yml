@@ -35,11 +35,17 @@ jobs:
         ref: v2.4.3
         path: pybind11/src
 
-    - name: Install Dependencies
+    - name: Install Dependencies, Katana ${{ matrix.version }}
       run: |
+        mkdir katana
+        curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
+        | tar -xzO katana_files.tar.gz | tar -xz -C katana &
+
         yum install -y centos-release-scl epel-release yum-utils
         curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
         yum install -y cmake3 devtoolset-6
+
+        wait  # For Katana to finish extracting
 
     - name: Install PyBind11
       working-directory: pybind11/src
@@ -49,12 +55,6 @@ jobs:
         make -j "$(nproc)"
         make install
         EOF
-
-    - name: Install Katana ${{ matrix.version }}
-      working-directory: katana
-      run: >
-        curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz"
-        | tar -xzO katana_files.tar.gz | tar -xz
 
     - name: Build plugin
       working-directory: build
