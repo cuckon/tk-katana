@@ -37,7 +37,7 @@ jobs:
 
     - name: Install Dependencies, Katana ${{ matrix.version }}
       run: |
-        mkdir katana
+        mkdir katana build
         curl -sSL "http://thefoundry.s3.amazonaws.com/products/katana/releases/${{ matrix.version }}/Katana${{ matrix.version }}-linux-x86-release-64.tgz" \
         | tar -xzO katana_files.tar.gz | tar -xz -C katana &
 
