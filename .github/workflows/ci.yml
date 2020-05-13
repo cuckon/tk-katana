@@ -38,7 +38,20 @@ jobs:
         yum install -y centos-release-scl epel-release yum-utils
         curl -sSL https://raw.githubusercontent.com/wwfxuk/centos-vault-scl/master/activate.sh | bash
         yum install -y cmake3 devtoolset-6
+
+    - name: Install PyBind11
+      working-directory: pybind11/src
+      run: |
+        scl enable devtoolset-6 - << EOF
+        cmake3 -DCMAKE_INSTALL_PREFIX="$(readlink -f ..)" -DPYBIND11_INSTALL=1 -DPYBIND11_TEST=0
+        make -j "$(nproc)"
+        make install
+        EOF
+
+    - name: Build plugin
+      run: |
         command -v cmake3
 
-    - name: Check cmake3 still there
-      run: command -v cmake3
+        set -x -o pipefail
+        PYBIND_INCLUDE_DIR="$(readlink -e pybind11/include)"
+
