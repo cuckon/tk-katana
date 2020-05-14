@@ -22,7 +22,11 @@ jobs:
         python-version: 3.7
     - run: pip install black
     - run: find -name '*.py' | xargs black
-    - run: git diff --exit-code --color-words -w --ignore-blank-lines
+    - name: Check for changes
+      run: git diff --exit-code --color-words -w --ignore-blank-lines
+      continue-on-error: true
+    - name: Check for changes (full diff)
+      run: git diff --exit-code --color=always
 
   build:
     name: "Build Plugin for ${{ matrix.version }}"
